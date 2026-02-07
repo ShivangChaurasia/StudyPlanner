@@ -9,28 +9,28 @@
     <title>Home | Smart Study Planner</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
+
         * {
             font-family: 'Poppins', sans-serif;
         }
-        
+
         .hero-gradient {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
-        
+
         .feature-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        
+
         .feature-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
-        
+
         .stats-card {
             background: linear-gradient(to right, #f8f9fa, #e9ecef);
         }
-        
+
         .typing-cursor {
             display: inline-block;
             width: 3px;
@@ -38,17 +38,17 @@
             animation: blink 1s infinite;
             margin-left: 2px;
         }
-        
+
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
-        
+
         .nav-link {
             position: relative;
             overflow: hidden;
         }
-        
+
         .nav-link:after {
             content: '';
             position: absolute;
@@ -60,11 +60,11 @@
             transform: translateX(-100%);
             transition: transform 0.3s ease;
         }
-        
+
         .nav-link:hover:after {
             transform: translateX(0);
         }
-        
+
         .dashboard-preview {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             border-radius: 12px;
@@ -118,7 +118,7 @@
             <p class="text-gray-600 text-center mb-16 max-w-3xl mx-auto">StudySync combines all the tools you need to organize, plan, track, and succeed in your academic journey.</p>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                <!-- Feature 1 -->
+                <!-- F1 -->
                 <div class="feature-card bg-white p-8 rounded-xl shadow-md">
                     <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
                         <i class="fas fa-tachometer-alt text-indigo-600 text-2xl"></i>
@@ -131,7 +131,7 @@
                     </a>
                 </div>
                 
-                <!-- Feature 2 -->
+                <!-- F2 -->
                 <div class="feature-card bg-white p-8 rounded-xl shadow-md">
                     <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
                         <i class="fas fa-book text-green-600 text-2xl"></i>
@@ -144,7 +144,7 @@
                     </a>
                 </div>
                 
-                <!-- Feature 3 -->
+                <!-- F3 -->
                 <div class="feature-card bg-white p-8 rounded-xl shadow-md">
                     <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
                         <i class="fas fa-calendar-alt text-blue-600 text-2xl"></i>
@@ -157,7 +157,7 @@
                     </a>
                 </div>
                 
-                <!-- Feature 4 -->
+                <!-- F4 -->
                 <div class="feature-card bg-white p-8 rounded-xl shadow-md">
                     <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-6">
                         <i class="fas fa-tasks text-purple-600 text-2xl"></i>
@@ -170,7 +170,7 @@
                     </a>
                 </div>
                 
-                <!-- Feature 5 -->
+                <!-- F5 -->
                 <div class="feature-card bg-white p-8 rounded-xl shadow-md">
                     <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-6">
                         <i class="fas fa-chart-line text-orange-600 text-2xl"></i>
@@ -183,7 +183,7 @@
                     </a>
                 </div>
                 
-                <!-- Feature 6 -->
+                <!-- F6 -->
                 <div class="feature-card bg-white p-8 rounded-xl shadow-md">
                     <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-6">
                         <i class="fas fa-cog text-red-600 text-2xl"></i>
@@ -199,7 +199,7 @@
         </div>
     </section>
 
-    <!-- Dashboard Preview -->
+    <!-- Dashboard -->
     <section class="py-20 bg-white">
         <div class="max-w-6xl mx-auto px-6">
             <div class="flex flex-col lg:flex-row items-center">
@@ -234,20 +234,20 @@
         </div>
     </section>
 
-    <!-- Testimonial Section -->
+    <!-- Testimonial -->
     <section class="py-20 bg-gray-50">
         <div class="max-w-6xl mx-auto px-6">
             <h2 class="text-4xl font-bold text-center text-gray-800 mb-4">Trusted by Students Worldwide</h2>
             <p class="text-gray-600 text-center mb-16 max-w-3xl mx-auto">See how StudySync has transformed study habits and improved academic performance.</p>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                 <div class="bg-white p-8 rounded-xl shadow-md">
                     <div class="flex items-center mb-6">
                         <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mr-4">
-                            <span class="font-bold text-indigo-600">SJ</span>
+                            <span class="font-bold text-indigo-600">SS</span>
                         </div>
                         <div>
-                            <h4 class="font-bold">Sarah Johnson</h4>
+                            <h4 class="font-bold">Sourav Sharma</h4>
                             <p class="text-gray-500 text-sm">Medical Student</p>
                         </div>
                     </div>
@@ -260,14 +260,14 @@
                         <i class="fas fa-star"></i>
                     </div>
                 </div>
-                
+
                 <div class="bg-white p-8 rounded-xl shadow-md">
                     <div class="flex items-center mb-6">
                         <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
-                            <span class="font-bold text-green-600">MR</span>
+                            <span class="font-bold text-green-600">ML</span>
                         </div>
                         <div>
-                            <h4 class="font-bold">Michael Rodriguez</h4>
+                            <h4 class="font-bold">Mukesh Lal</h4>
                             <p class="text-gray-500 text-sm">Engineering Student</p>
                         </div>
                     </div>
@@ -280,7 +280,7 @@
                         <i class="fas fa-star-half-alt"></i>
                     </div>
                 </div>
-                
+
                 <div class="bg-white p-8 rounded-xl shadow-md">
                     <div class="flex items-center mb-6">
                         <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4">
@@ -318,96 +318,62 @@
                     </div>
                     <p class="mt-4 text-gray-400 max-w-md">Your all-in-one solution for academic organization, planning, and progress tracking. Achieve more with less stress.</p>
                 </div>
-                
+
                 <div class="flex space-x-6">
                     <a href="#" class="text-gray-300 hover:text-white transition duration-300">
-                        <i class="fab fa-twitter text-2xl"></i>
-                    </a>
-                    <a href="#" class="text-gray-300 hover:text-white transition duration-300">
-                        <i class="fab fa-facebook text-2xl"></i>
-                    </a>
-                    <a href="#" class="text-gray-300 hover:text-white transition duration-300">
-                        <i class="fab fa-instagram text-2xl"></i>
+                        <i class="fab fa-github text-2xl"></i>
                     </a>
                     <a href="#" class="text-gray-300 hover:text-white transition duration-300">
                         <i class="fab fa-linkedin text-2xl"></i>
                     </a>
                 </div>
             </div>
-            
+
             <div class="border-t border-gray-700 mt-10 pt-8 text-center text-gray-400">
-                <p>&copy; 2023 StudySync Smart Study Planner. All rights reserved.</p>
+                <p>&copy; 2026 StudySync Smart Study Planner. All rights reserved.</p>
                 <p class="mt-2">Designed to help students achieve academic excellence.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Typing effect for greeting
-        function typeText(element, text, speed, callback) {
+        function typeText(element, text, speed) {
             let i = 0;
             element.innerHTML = '';
-            
+
             function type() {
                 if (i < text.length) {
                     element.innerHTML += text.charAt(i);
                     i++;
                     setTimeout(type, speed);
-                } 
+                }
             }
-            
+
             type();
         }
-        
-        // Set greeting based on time of day
+
         function setGreeting() {
             const greetHead = document.getElementById('greet-head');
             const currentHour = new Date().getHours();
             let greeting = "";
-            
+
             if (currentHour < 12) {
-                greeting = "Good morning! Ready to plan your study day?";
+                greeting = "Good Morning! Ready to plan your study day?";
             } else if (currentHour < 18) {
-                greeting = "Good afternoon! Time for a productive study session.";
+                greeting = "Good Afternoon! Time for a productive study session.";
             } else {
-                greeting = "Good evening! Let's review your study progress.";
+                greeting = "Good Evening! Let's review your study progress.";
             }
-            
+
             // Type the greeting with a cursor effect
             typeText(greetHead, greeting, 70, function() {
-                // Add blinking cursor after typing is done
                 const cursor = document.createElement('span');
-                cursor.className = 'typing-cursor';
                 greetHead.appendChild(cursor);
-                
-                // Remove cursor after 3 seconds
-                setTimeout(() => {
-                    cursor.style.display = 'none';
-                }, 3000);
             });
         }
-        
-        // Initialize when page loads
+
         document.addEventListener('DOMContentLoaded', function() {
             setGreeting();
-
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
         });
     </script>
 </body>

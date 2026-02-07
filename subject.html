@@ -7,7 +7,242 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subject Manager | Smart Study Planner</title>
 </head>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    * {
+        font-family: 'Poppins', sans-serif;
+    }
+    .hero-gradient {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .feature-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    .stats-card {
+        background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    }
+    .typing-cursor {
+        display: inline-block;
+        width: 3px;
+        background-color: #333;
+        animation: blink 1s infinite;
+        margin-left: 2px;
+    }
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+    .nav-link {
+        position: relative;
+        overflow: hidden;
+    }
+    .nav-link:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #4f46e5;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    .nav-link:hover:after {
+        transform: translateX(0);
+    }
+    .dashboard-preview {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        border-radius: 12px;
+    }
+</style>
 <body>
-    
+    <!-- Subject Management: Add, edit, delete subjects with priorities. -->
+
+    <!-- Navigation -->
+    <nav class="p-6 flex justify-between items-center bg-white shadow-md sticky top-0 z-50">
+        <div class="flex items-center ml-6">
+            <img src="./Assets/Planner.png" alt="Planner" class="w-12 h-12">
+            <div class="text-center ml-4">
+                <h1 class="font-bold text-3xl text-gray-800">StudySync</h1>
+                <p class="text-sm text-gray-500">Smart Study Planner</p>
+            </div>
+        </div>
+        <div class="flex items-center mr-6">
+            <a href="index.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Home</a>
+            <a href="Dashboard.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Dashboard</a>
+            <a href="subject.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Subject Manager</a>
+            <a href="schedule.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Schedule Planner</a>
+            <a href="task.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Task Manager</a>
+            <a href="progress.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Progress Tracker</a>
+            <div class="relative ml-4">
+                <select class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <option selected>Settings</option>
+                    <button>Light</button>
+                    <option>Dark/Light</option>
+                    <option>Data Reset</option>
+                    <option>Export</option>
+                </select>
+            </div>
+        </div>
+    </nav>
+
+
+    <section>
+        <div class="max-w-6xl mx-auto px-6 py-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8">Subject Manager</h2>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <form id="subjectForm" class="mb-6" onsubmit="event.preventDefault(); addSubject();">
+                    <legend class="text-lg font-bold text-gray-800 mb-2">Add New Subject</legend>
+                    <div class="flex flex-col md:flex-row md:space-x-4 mb-4">
+                        <input id="subName" type="text" placeholder="Subject Name" class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4 md:mb-0">
+                        <select id="priority" class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="" disabled selected>Priority</option>
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+                        <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-300">Add Subject</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="max-w-6xl mx-auto px-6 pb-12">
+            <div id="subjectCardContainer"
+                 class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </div>
+
+
+
+    </section>
+
+
+
+
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12 mt-27">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-8 md:mb-0">
+                    <div class="flex items-center">
+                        <img src="./Assets/Planner.png" alt="Planner" class="w-12 h-12">
+                        <div class="text-center ml-4">
+                            <h1 class="font-bold text-3xl">StudySync</h1>
+                            <p class="text-sm text-gray-300">Smart Study Planner</p>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-gray-400 max-w-md">Your all-in-one solution for academic organization, planning, and progress tracking. Achieve more with less stress.</p>
+                </div>
+
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-300 hover:text-white transition duration-300">
+                        <i class="fab fa-github text-2xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-300 hover:text-white transition duration-300">
+                        <i class="fab fa-linkedin text-2xl"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 mt-10 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 StudySync Smart Study Planner. All rights reserved.</p>
+                <p class="mt-2">Designed to help students achieve academic excellence.</p>
+            </div>
+        </div>
+    </footer>
 </body>
+
+<script>
+// Subject Manager JavaScript which help storing data on browser local storage
+    // Check if subject list exists in local storage, if not, create an empty array
+    if (!localStorage.getItem("subjectList")) {
+        localStorage.setItem("subjectList", JSON.stringify([]));
+    }
+
+    
+    function addSubject() {
+        let subName = document.getElementById("subName").value;
+        let priority = document.getElementById("priority").value;
+        if (subName === "" || priority === "") {
+            alert("Please fill in all fields");
+            return;
+        }
+        let subjectList = JSON.parse(localStorage.getItem("subjectList")) || [];
+        subjectList.push({ subName, priority });
+        localStorage.setItem("subjectList", JSON.stringify(subjectList));
+        document.getElementById("subjectForm").reset();
+        renderSubjects(); // 🔥 re-render UI
+    }
+
+
+    function renderSubjects() {
+        let subjectCardContainer = document.getElementById("subjectCardContainer");
+        subjectCardContainer.innerHTML = ""; // clear old UI
+        
+        let subjectList = JSON.parse(localStorage.getItem("subjectList")) || [];
+        if (subjectList.length === 0) {
+            subjectCardContainer.innerHTML = `
+                <div class="col-span-full text-center text-gray-500 py-12">
+                    No subjects added yet. Start by adding one above 📘
+                </div>
+            `;
+            return;
+        }
+
+        subjectList.forEach((subject, index) => {
+            let card = document.createElement("div");
+
+            card.innerHTML = `
+                <div class="border border-gray-200 rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">${subject.subName}</h3>
+                    <p class="text-gray-600 mb-4">Priority: ${subject.priority}</p>
+
+                    <div class="flex gap-3">
+                        <button onclick="deleteSubject(${index})"
+                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                            Delete
+                        </button>
+
+                        <button onclick="editSubject(${index})"
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                            Edit
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            subjectCardContainer.appendChild(card);
+        });
+    }
+
+    renderSubjects();
+
+
+    function deleteSubject(index) {
+        let subjectList = JSON.parse(localStorage.getItem("subjectList")) || [];
+        subjectList.splice(index, 1);
+        localStorage.setItem("subjectList", JSON.stringify(subjectList));
+        renderSubjects();
+    }
+
+     function editSubject(index) {
+        let subjectList = JSON.parse(localStorage.getItem("subjectList")) || [];
+        let subject = subjectList[index];
+
+        document.getElementById("subName").value = subject.subName;
+        document.getElementById("priority").value = subject.priority;
+
+        deleteSubject(index); // remove old entry
+    }
+
+
+
+</script>
 </html>
