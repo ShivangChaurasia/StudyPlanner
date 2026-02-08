@@ -79,15 +79,7 @@
             <a href="schedule.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Schedule Planner</a>
             <a href="task.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Task Manager</a>
             <a href="progress.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Progress Tracker</a>
-            <div class="relative ml-4">
-                <select class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    <option selected>Settings</option>
-                    <button>Light</button>
-                    <option>Dark/Light</option>
-                    <option>Data Reset</option>
-                    <option>Export</option>
-                </select>
-            </div>
+            <a href="settings.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Settings</a>
         </div>
     </nav>
 
@@ -111,19 +103,13 @@
                 </form>
             </div>
         </div>
-        
+
         <div class="max-w-6xl mx-auto px-6 pb-12">
             <div id="subjectCardContainer"
                  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             </div>
         </div>
-
-
-
     </section>
-
-
-
 
 
     <!-- Footer -->
@@ -142,10 +128,10 @@
                 </div>
 
                 <div class="flex space-x-6">
-                    <a href="#" class="text-gray-300 hover:text-white transition duration-300">
+                    <a href="https://github.com/ShivangChaurasia" target="_blank" class="text-gray-300 hover:text-white transition duration-300">
                         <i class="fab fa-github text-2xl"></i>
                     </a>
-                    <a href="#" class="text-gray-300 hover:text-white transition duration-300">
+                    <a href="https://www.linkedin.com/in/shivang-chaurasia-754232297" target="_blank" class="text-gray-300 hover:text-white transition duration-300">
                         <i class="fab fa-linkedin text-2xl"></i>
                     </a>
                 </div>
@@ -160,13 +146,138 @@
 </body>
 
 <script>
+    // Apply dark mode on page load for all pages
+    document.addEventListener('DOMContentLoaded', function() {
+        const isDarkMode = localStorage.getItem('studysync-theme') === 'true';
+        if (isDarkMode) {
+            document.body.classList.add('dark-mode');
+        }
+        
+        // Add dark mode styles to every page
+        const style = document.createElement('style');
+        style.textContent = `
+            .dark-mode {
+                background-color: #111827 !important;
+                color: #f9fafb !important;
+            }
+            
+            .dark-mode .bg-gray-50,
+            .dark-mode .bg-gray-100 {
+                background-color: #1f2937 !important;
+            }
+            
+            .dark-mode .bg-white {
+                background-color: #374151 !important;
+            }
+            
+            .dark-mode .text-gray-800,
+            .dark-mode .text-gray-700 {
+                color: #f9fafb !important;
+            }
+            
+            .dark-mode .text-gray-600,
+            .dark-mode .text-gray-500 {
+                color: #d1d5db !important;
+            }
+            
+            .dark-mode nav {
+                background-color: #1f2937 !important;
+                border-bottom: 1px solid #4b5563 !important;
+            }
+            
+            .dark-mode .bg-indigo-50 {
+                background-color: #3730a3 !important;
+            }
+            
+            .dark-mode .border {
+                border-color: #4b5563 !important;
+            }
+            
+            .dark-mode input,
+            .dark-mode select,
+            .dark-mode textarea {
+                background-color: #4b5563 !important;
+                color: #f9fafb !important;
+                border-color: #6b7280 !important;
+            }
+            
+            .dark-mode .bg-gray-200 {
+                background-color: #4b5563 !important;
+            }
+            
+            .dark-mode .bg-red-100 {
+                background-color: #7f1d1d !important;
+            }
+            
+            .dark-mode .text-red-700 {
+                color: #fca5a5 !important;
+            }
+            
+            .dark-mode .bg-indigo-100 {
+                background-color: #3730a3 !important;
+            }
+            
+            .dark-mode .text-indigo-700 {
+                color: #c7d2fe !important;
+            }
+            
+            .dark-mode footer {
+                background-color: #111827 !important;
+                border-top: 1px solid #374151 !important;
+            }
+            
+            .dark-mode footer .text-gray-300 {
+                color: #d1d5db !important;
+            }
+            
+            .dark-mode footer .text-gray-400 {
+                color: #9ca3af !important;
+            }
+            
+            .dark-mode footer .border-gray-700 {
+                border-color: #4b5563 !important;
+            }
+            
+            .dark-mode footer .hover\\:text-white:hover {
+                color: #ffffff !important;
+            }
+            
+            .dark-mode .stats-card {
+                background: linear-gradient(to right, #374151, #4b5563) !important;
+            }
+            
+            .dark-mode .feature-card,
+            .dark-mode .task-card,
+            .dark-mode .settings-card {
+                background-color: #374151 !important;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+            }
+            
+            .dark-mode .feature-card:hover,
+            .dark-mode .task-card:hover,
+            .dark-mode .settings-card:hover {
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4) !important;
+            }
+            
+            .dark-mode .modal-content {
+                background-color: #374151 !important;
+            }
+            
+            .dark-mode .nav-link:after {
+                background-color: #818cf8 !important;
+            }
+        `;
+        document.head.appendChild(style);
+    });
+
+    
 // Subject Manager JavaScript which help storing data on browser local storage
-    // Check if subject list exists in local storage, if not, create an empty array
+
     if (!localStorage.getItem("subjectList")) {
         localStorage.setItem("subjectList", JSON.stringify([]));
     }
 
-    
+
     function addSubject() {
         let subName = document.getElementById("subName").value;
         let priority = document.getElementById("priority").value;
@@ -185,7 +296,7 @@
     function renderSubjects() {
         let subjectCardContainer = document.getElementById("subjectCardContainer");
         subjectCardContainer.innerHTML = ""; // clear old UI
-        
+
         let subjectList = JSON.parse(localStorage.getItem("subjectList")) || [];
         if (subjectList.length === 0) {
             subjectCardContainer.innerHTML = `
@@ -239,7 +350,7 @@
         document.getElementById("subName").value = subject.subName;
         document.getElementById("priority").value = subject.priority;
 
-        deleteSubject(index); // remove old entry
+        deleteSubject(index);
     }
 
 

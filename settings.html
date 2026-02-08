@@ -4,10 +4,864 @@
     <meta charset="UTF-8">
     <link href="./Assets/Planner.png" rel="icon" type="image/png">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Settings | StudySync</title>
 </head>
-<body>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    * {
+        font-family: 'Poppins', sans-serif;
+    }
+    .hero-gradient {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .feature-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    .stats-card {
+        background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    }
+    .typing-cursor {
+        display: inline-block;
+        width: 3px;
+        background-color: #333;
+        animation: blink 1s infinite;
+        margin-left: 2px;
+    }
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+    .nav-link {
+        position: relative;
+        overflow: hidden;
+    }
+    .nav-link:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #4f46e5;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    .nav-link:hover:after {
+        transform: translateX(0);
+    }
+    .dashboard-preview {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        border-radius: 12px;
+    }
     
+    /* Custom Styles for Settings */
+    .settings-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+    
+    .settings-card:hover {
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    }
+    
+    .theme-toggle {
+        width: 60px;
+        height: 30px;
+        background: #e5e7eb;
+        border-radius: 9999px;
+        position: relative;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .theme-toggle.active {
+        background: #4f46e5;
+    }
+    
+    .theme-toggle-slider {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 24px;
+        height: 24px;
+        background: white;
+        border-radius: 50%;
+        transition: transform 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    .theme-toggle.active .theme-toggle-slider {
+        transform: translateX(30px);
+    }
+    
+    .preference-slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 8px;
+        border-radius: 4px;
+        background: #e5e7eb;
+        outline: none;
+    }
+    
+    .preference-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #4f46e5;
+        cursor: pointer;
+        border: 3px solid white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    .preference-slider::-moz-range-thumb {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #4f46e5;
+        cursor: pointer;
+        border: 3px solid white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    .reset-button {
+        background: linear-gradient(to right, #ef4444, #dc2626);
+        color: white;
+        transition: all 0.3s ease;
+    }
+    
+    .reset-button:hover {
+        background: linear-gradient(to right, #dc2626, #b91c1c);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);
+    }
+    
+    .export-button {
+        background: linear-gradient(to right, #10b981, #059669);
+        color: white;
+        transition: all 0.3s ease;
+    }
+    
+    .export-button:hover {
+        background: linear-gradient(to right, #059669, #047857);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+    }
+    
+    .icon-container {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+    }
+    
+    .theme-icon {
+        background: rgba(79, 70, 229, 0.1);
+        color: #4f46e5;
+    }
+    
+    .preference-icon {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+    }
+    
+    .reset-icon {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+    }
+    
+    .export-icon {
+        background: rgba(59, 130, 246, 0.1);
+        color: #3b82f6;
+    }
+    
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .modal-content {
+        background: white;
+        border-radius: 16px;
+        padding: 30px;
+        max-width: 500px;
+        width: 90%;
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+    }
+    
+    .modal-overlay.active .modal-content {
+        transform: translateY(0);
+    }
+    
+    /* Dark Mode Styles - FIXED */
+    .dark-mode {
+        background-color: #111827 !important;
+        color: #f9fafb !important;
+    }
+    
+    .dark-mode .bg-gray-50 {
+        background-color: #1f2937 !important;
+    }
+    
+    .dark-mode .bg-white {
+        background-color: #374151 !important;
+    }
+    
+    .dark-mode .text-gray-800,
+    .dark-mode .text-gray-700 {
+        color: #f9fafb !important;
+    }
+    
+    .dark-mode .text-gray-600,
+    .dark-mode .text-gray-500 {
+        color: #d1d5db !important;
+    }
+    
+    .dark-mode .settings-card {
+        background-color: #374151 !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    .dark-mode .settings-card:hover {
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4) !important;
+    }
+    
+    .dark-mode .modal-content {
+        background-color: #374151 !important;
+    }
+    
+    .dark-mode nav {
+        background-color: #1f2937 !important;
+        border-bottom: 1px solid #4b5563 !important;
+    }
+    
+    .dark-mode .nav-link:after {
+        background-color: #818cf8 !important;
+    }
+    
+    .dark-mode .bg-indigo-50 {
+        background-color: #3730a3 !important;
+    }
+    
+    .dark-mode .border {
+        border-color: #4b5563 !important;
+    }
+    
+    .dark-mode input,
+    .dark-mode select,
+    .dark-mode textarea {
+        background-color: #4b5563 !important;
+        color: #f9fafb !important;
+        border-color: #6b7280 !important;
+    }
+    
+    .dark-mode .bg-gray-200 {
+        background-color: #4b5563 !important;
+    }
+    
+    .dark-mode .bg-gray-100 {
+        background-color: #4b5563 !important;
+    }
+    
+    .dark-mode .bg-red-100 {
+        background-color: #7f1d1d !important;
+    }
+    
+    .dark-mode .text-red-700 {
+        color: #fca5a5 !important;
+    }
+    
+    .dark-mode .bg-indigo-100 {
+        background-color: #3730a3 !important;
+    }
+    
+    .dark-mode .text-indigo-700 {
+        color: #c7d2fe !important;
+    }
+    
+    /* Fixed Footer Styles - Add !important to override Tailwind */
+    .dark-mode footer {
+        background-color: #111827 !important;
+        border-top: 1px solid #374151 !important;
+    }
+    
+    .dark-mode footer .text-gray-300 {
+        color: #d1d5db !important;
+    }
+    
+    .dark-mode footer .text-gray-400 {
+        color: #9ca3af !important;
+    }
+    
+    .dark-mode footer .border-gray-700 {
+        border-color: #4b5563 !important;
+    }
+    
+    .dark-mode footer .hover\:text-white:hover {
+        color: #ffffff !important;
+    }
+    
+    .dark-mode .stats-card {
+        background: linear-gradient(to right, #374151, #4b5563) !important;
+    }
+    
+    .dark-mode .feature-card {
+        background-color: #374151 !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    .dark-mode .feature-card:hover {
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4) !important;
+    }
+</style>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="p-6 flex justify-between items-center bg-white shadow-md sticky top-0 z-50">
+        <div class="flex items-center ml-6">
+            <img src="./Assets/Planner.png" alt="Planner" class="w-12 h-12">
+            <div class="text-center ml-4">
+                <h1 class="font-bold text-3xl text-gray-800">StudySync</h1>
+                <p class="text-sm text-gray-500">Smart Study Planner</p>
+            </div>
+        </div>
+        <div class="flex items-center mr-6">
+            <a href="index.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Home</a>
+            <a href="Dashboard.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Dashboard</a>
+            <a href="subject.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Subject Manager</a>
+            <a href="schedule.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Schedule Planner</a>
+            <a href="task.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Task Manager</a>
+            <a href="progress.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Progress Tracker</a>
+            <a href="settings.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link bg-indigo-50 rounded-lg">Settings</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 py-12">
+        <!-- Header -->
+        <div class="mb-10">
+            <h1 class="text-4xl font-bold text-gray-800 mb-3">Settings</h1>
+            <p class="text-lg text-gray-600">Customize your StudySync experience and manage your data</p>
+        </div>
+        
+        <!-- Settings Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Theme Settings Card -->
+            <div class="settings-card p-6">
+                <div class="flex items-start mb-6">
+                    <div class="icon-container theme-icon">
+                        <i class="fas fa-palette text-xl"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Theme Settings</h2>
+                        <p class="text-gray-600">Customize the appearance of your StudySync interface</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <!-- Theme Toggle -->
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-1">Dark Mode</h3>
+                            <p class="text-sm text-gray-500">Switch between light and dark theme</p>
+                        </div>
+                        <div class="theme-toggle" id="themeToggle">
+                            <div class="theme-toggle-slider"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Preferences Card -->
+            <div class="settings-card p-6">
+                <div class="flex items-start mb-6">
+                    <div class="icon-container preference-icon">
+                        <i class="fas fa-sliders-h text-xl"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Preferences</h2>
+                        <p class="text-gray-600">Adjust how StudySync behaves and notifies you</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <!-- Notifications -->
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-1">Notifications</h3>
+                            <p class="text-sm text-gray-500">Receive reminders for tasks and deadlines</p>
+                        </div>
+                        <div class="theme-toggle" id="notificationsToggle">
+                            <div class="theme-toggle-slider"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Daily Reminders -->
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-1">Daily Study Reminders</h3>
+                            <p class="text-sm text-gray-500">Get daily motivation and study tips</p>
+                        </div>
+                        <div class="theme-toggle" id="remindersToggle">
+                            <div class="theme-toggle-slider"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Auto-save -->
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-1">Auto-save Progress</h3>
+                            <p class="text-sm text-gray-500">Automatically save your progress every 5 minutes</p>
+                        </div>
+                        <div class="theme-toggle" id="autosaveToggle">
+                            <div class="theme-toggle-slider"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Data Reset Card -->
+            <div class="settings-card p-6">
+                <div class="flex items-start mb-6">
+                    <div class="icon-container reset-icon">
+                        <i class="fas fa-redo text-xl"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Data Management</h2>
+                        <p class="text-gray-600">Reset or clear your StudySync data</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <!-- Reset Tasks -->
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-1">Reset All Tasks</h3>
+                            <p class="text-sm text-gray-500">Clear all completed and pending tasks</p>
+                        </div>
+                        <button class="px-4 py-2 bg-red-100 text-red-700 font-medium rounded-lg hover:bg-red-200 transition duration-300" id="resetTasksBtn">
+                            Reset Tasks
+                        </button>
+                    </div>
+                    
+                    <!-- Reset Schedule -->
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-1">Reset Study Schedule</h3>
+                            <p class="text-sm text-gray-500">Clear your entire study schedule</p>
+                        </div>
+                        <button class="px-4 py-2 bg-red-100 text-red-700 font-medium rounded-lg hover:bg-red-200 transition duration-300" id="resetScheduleBtn">
+                            Reset Schedule
+                        </button>
+                    </div>
+                    
+                    <!-- Complete Reset -->
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-1">Factory Reset</h3>
+                            <p class="text-sm text-gray-500">Reset everything to default settings</p>
+                        </div>
+                        <button class="reset-button px-5 py-3 font-semibold rounded-lg" id="factoryResetBtn">
+                            Factory Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Export Card -->
+            <div class="settings-card p-6">
+                <div class="flex items-start mb-6">
+                    <div class="icon-container export-icon">
+                        <i class="fas fa-file-export text-xl"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Export & Backup</h2>
+                        <p class="text-gray-600">Export your data for backup or analysis</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <!-- Export Format -->
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-3">Export Format</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <button class="px-4 py-2 bg-indigo-100 text-indigo-700 font-medium rounded-lg hover:bg-indigo-200 transition duration-300" data-format="json">
+                                <i class="fas fa-code mr-2"></i>JSON
+                            </button>
+                            <button class="px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition duration-300" data-format="csv">
+                                <i class="fas fa-table mr-2"></i>CSV
+                            </button>
+                            <button class="px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition duration-300" data-format="pdf">
+                                <i class="fas fa-file-pdf mr-2"></i>PDF
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Export Options -->
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="exportTasks" class="w-5 h-5 text-indigo-600 rounded" checked>
+                            <label for="exportTasks" class="ml-3 font-medium text-gray-800">Tasks & To-Do Lists</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="exportSchedule" class="w-5 h-5 text-indigo-600 rounded" checked>
+                            <label for="exportSchedule" class="ml-3 font-medium text-gray-800">Study Schedule</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="exportProgress" class="w-5 h-5 text-indigo-600 rounded" checked>
+                            <label for="exportProgress" class="ml-3 font-medium text-gray-800">Progress Data</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="exportSubjects" class="w-5 h-5 text-indigo-600 rounded" checked>
+                            <label for="exportSubjects" class="ml-3 font-medium text-gray-800">Subject Materials</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Export Button -->
+                    <button class="export-button w-full py-4 font-semibold rounded-lg flex items-center justify-center text-lg mt-4" id="exportDataBtn">
+                        <i class="fas fa-download mr-3"></i>
+                        Export Selected Data
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Save Settings Button -->
+        <div class="mt-12 flex justify-center">
+            <button class="px-10 py-4 bg-indigo-600 text-white font-bold text-lg rounded-xl hover:bg-indigo-700 transition duration-300 shadow-lg" id="saveSettingsBtn">
+                <i class="fas fa-save mr-3"></i>
+                Save All Settings
+            </button>
+        </div>
+    </main>
+    
+    <!-- Confirmation Modal -->
+    <div class="modal-overlay" id="confirmationModal">
+        <div class="modal-content">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4" id="modalTitle">Confirm Action</h3>
+            <p class="text-gray-600 mb-6" id="modalMessage">Are you sure you want to perform this action?</p>
+            <div class="flex justify-end space-x-4">
+                <button class="px-5 py-2 bg-gray-200 text-gray-800 font-medium rounded-lg hover:bg-gray-300 transition duration-300" id="cancelBtn">
+                    Cancel
+                </button>
+                <button class="px-5 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition duration-300" id="confirmBtn">
+                    Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-8 md:mb-0">
+                    <div class="flex items-center">
+                        <img src="./Assets/Planner.png" alt="Planner" class="w-12 h-12">
+                        <div class="text-center ml-4">
+                            <h1 class="font-bold text-3xl">StudySync</h1>
+                            <p class="text-sm text-gray-300">Smart Study Planner</p>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-gray-400 max-w-md">Your all-in-one solution for academic organization, planning, and progress tracking. Achieve more with less stress.</p>
+                </div>
+
+                <div class="flex space-x-6">
+                    <a href="https://github.com/ShivangChaurasia" target="_blank" class="text-gray-300 hover:text-white transition duration-300">
+                        <i class="fab fa-github text-2xl"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/shivang-chaurasia-754232297" target="_blank" class="text-gray-300 hover:text-white transition duration-300">
+                        <i class="fab fa-linkedin text-2xl"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 mt-10 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 StudySync Smart Study Planner. All rights reserved.</p>
+                <p class="mt-2">Designed to help students achieve academic excellence.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Apply dark mode on page load
+        function applyDarkMode() {
+            const isDarkMode = localStorage.getItem('studysync-theme') === 'true';
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('themeToggle').classList.add('active');
+            } else {
+                document.body.classList.remove('dark-mode');
+                document.getElementById('themeToggle').classList.remove('active');
+            }
+        }
+        
+        // Toggle dark mode
+        function toggleDarkMode() {
+            const themeToggle = document.getElementById('themeToggle');
+            themeToggle.classList.toggle('active');
+            
+            const isDarkMode = themeToggle.classList.contains('active');
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            
+            // Save to localStorage for all pages
+            localStorage.setItem('studysync-theme', isDarkMode);
+            
+            console.log('Dark mode:', isDarkMode ? 'enabled' : 'disabled');
+        }
+        
+        // Initialize settings
+        function initializeSettings() {
+            // Apply dark mode on load
+            applyDarkMode();
+            
+            // Setup theme toggle
+            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
+            
+            // Other toggles
+            const toggles = {
+                notifications: document.getElementById('notificationsToggle'),
+                reminders: document.getElementById('remindersToggle'),
+                autosave: document.getElementById('autosaveToggle')
+            };
+            
+            // Initialize other toggles from localStorage or defaults
+            Object.keys(toggles).forEach(key => {
+                const savedState = localStorage.getItem(`studysync-${key}`);
+                const toggle = toggles[key];
+                
+                if (savedState === 'true' || (key === 'notifications' && savedState === null)) {
+                    toggle.classList.add('active');
+                }
+                
+                toggle.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    localStorage.setItem(`studysync-${key}`, this.classList.contains('active'));
+                });
+            });
+            
+            // Reset buttons
+            const resetTasksBtn = document.getElementById('resetTasksBtn');
+            const resetScheduleBtn = document.getElementById('resetScheduleBtn');
+            const factoryResetBtn = document.getElementById('factoryResetBtn');
+            
+            // Export buttons
+            const exportButtons = document.querySelectorAll('[data-format]');
+            const exportDataBtn = document.getElementById('exportDataBtn');
+            
+            // Modal elements
+            const confirmationModal = document.getElementById('confirmationModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMessage = document.getElementById('modalMessage');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const confirmBtn = document.getElementById('confirmBtn');
+            const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+            
+            let pendingAction = null;
+            
+            // Reset buttons handlers
+            resetTasksBtn.addEventListener('click', function() {
+                showModal(
+                    'Reset All Tasks',
+                    'This will permanently delete all your tasks (both completed and pending). This action cannot be undone.',
+                    'resetTasks'
+                );
+            });
+            
+            resetScheduleBtn.addEventListener('click', function() {
+                showModal(
+                    'Reset Study Schedule',
+                    'This will clear your entire study schedule, including all planned sessions and reminders.',
+                    'resetSchedule'
+                );
+            });
+            
+            factoryResetBtn.addEventListener('click', function() {
+                showModal(
+                    'Factory Reset',
+                    'This will reset ALL data and settings to their default values. This includes tasks, schedule, progress, and preferences. This action cannot be undone.',
+                    'factoryReset'
+                );
+            });
+            
+            // Export format selection
+            let selectedFormat = 'json';
+            exportButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    selectedFormat = this.dataset.format;
+                    
+                    // Update UI
+                    exportButtons.forEach(btn => {
+                        btn.classList.remove('bg-indigo-100', 'text-indigo-700');
+                        btn.classList.add('bg-gray-100', 'text-gray-700');
+                    });
+                    
+                    this.classList.add('bg-indigo-100', 'text-indigo-700');
+                    this.classList.remove('bg-gray-100', 'text-gray-700');
+                });
+            });
+            
+            // Set JSON as default selected
+            document.querySelector('[data-format="json"]').classList.add('bg-indigo-100', 'text-indigo-700');
+            
+            // Export data button
+            exportDataBtn.addEventListener('click', function() {
+                const exportOptions = {
+                    tasks: document.getElementById('exportTasks').checked,
+                    schedule: document.getElementById('exportSchedule').checked,
+                    progress: document.getElementById('exportProgress').checked,
+                    subjects: document.getElementById('exportSubjects').checked
+                };
+                
+                // Check if at least one option is selected
+                if (!Object.values(exportOptions).some(option => option)) {
+                    alert('Please select at least one data type to export.');
+                    return;
+                }
+                
+                // Simulate export
+                const date = new Date();
+                const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                // Show success message
+                alert(`Data exported successfully as ${selectedFormat.toUpperCase()} file!`);
+                
+                // Save export date
+                localStorage.setItem('studysync-lastexport', formattedDate);
+                
+                console.log('Exporting data as:', selectedFormat, 'with options:', exportOptions);
+            });
+            
+            // Save all settings
+            saveSettingsBtn.addEventListener('click', function() {
+                // Collect all current settings
+                const settings = {
+                    theme: document.getElementById('themeToggle').classList.contains('active'),
+                    notifications: document.getElementById('notificationsToggle').classList.contains('active'),
+                    reminders: document.getElementById('remindersToggle').classList.contains('active'),
+                    autosave: document.getElementById('autosaveToggle').classList.contains('active')
+                };
+                
+                // Save to localStorage
+                Object.keys(settings).forEach(key => {
+                    localStorage.setItem(`studysync-${key}`, settings[key]);
+                });
+                
+                // Show success feedback
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-check mr-3"></i> Settings Saved!';
+                this.classList.remove('bg-indigo-600');
+                this.classList.add('bg-green-600');
+                
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                    this.classList.remove('bg-green-600');
+                    this.classList.add('bg-indigo-600');
+                }, 2000);
+                
+                console.log('Settings saved:', settings);
+            });
+            
+            // Modal functions
+            function showModal(title, message, action) {
+                modalTitle.textContent = title;
+                modalMessage.textContent = message;
+                pendingAction = action;
+                confirmationModal.classList.add('active');
+            }
+            
+            function hideModal() {
+                confirmationModal.classList.remove('active');
+                pendingAction = null;
+            }
+            
+            // Modal button handlers
+            cancelBtn.addEventListener('click', hideModal);
+            
+            confirmBtn.addEventListener('click', function() {
+                if (pendingAction) {
+                    // Execute the pending action
+                    switch(pendingAction) {
+                        case 'resetTasks':
+                            localStorage.setItem("taskList", JSON.stringify([]));
+                            alert('All tasks have been reset.');
+                            console.log('Tasks reset');
+                            break;
+                        case 'resetSchedule':
+                            localStorage.setItem("studySchedule", JSON.stringify([]));
+                            alert('Study schedule has been reset.');
+                            console.log('Schedule reset');
+                            break;
+                        case 'factoryReset':
+                            alert('Factory reset completed. All data has been cleared.');
+                            console.log('Factory reset');
+                            // Clear all localStorage for this app
+                            Object.keys(localStorage).forEach(key => {
+                                if (key.startsWith('studysync-')) {
+                                    localStorage.removeItem(key);
+                                }
+                            });
+                            // Clear app data
+                            localStorage.removeItem("subjectList");
+                            localStorage.removeItem("taskList");
+                            localStorage.removeItem("studySchedule");
+                            localStorage.removeItem("studyGoals");
+                            localStorage.removeItem("studyActivity");
+                            
+                            // Keep theme setting
+                            const themeState = document.getElementById('themeToggle').classList.contains('active');
+                            localStorage.setItem('studysync-theme', themeState);
+                            
+                            // Reload the page to apply reset
+                            setTimeout(() => location.reload(), 1000);
+                            break;
+                    }
+                }
+                hideModal();
+            });
+            
+            // Close modal when clicking outside
+            confirmationModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    hideModal();
+                }
+            });
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initializeSettings);
+    </script>
 </body>
 </html>

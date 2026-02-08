@@ -4,10 +4,529 @@
     <meta charset="UTF-8">
     <link href="./Assets/Planner.png" rel="icon" type="image/png">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Progress Tracker | StudySync</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        * { font-family: 'Poppins', sans-serif; }
+        
+        .progress-ring {
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        
+        .progress-ring-circle {
+            stroke-dasharray: 283;
+            stroke-dashoffset: 283;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+        
+        .chart-bar {
+            transition: height 0.5s ease, background-color 0.5s ease;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="p-6 flex justify-between items-center bg-white shadow-md sticky top-0 z-50">
+        <div class="flex items-center ml-6">
+            <img src="./Assets/Planner.png" alt="Planner" class="w-12 h-12">
+            <div class="text-center ml-4">
+                <h1 class="font-bold text-3xl text-gray-800">StudySync</h1>
+                <p class="text-sm text-gray-500">Smart Study Planner</p>
+            </div>
+        </div>
+        <div class="flex items-center mr-6">
+            <a href="index.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Home</a>
+            <a href="Dashboard.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Dashboard</a>
+            <a href="subject.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Subject Manager</a>
+            <a href="schedule.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Schedule Planner</a>
+            <a href="task.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Task Manager</a>
+            <a href="progress.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link bg-indigo-50 rounded-lg">Progress Tracker</a>
+            <a href="settings.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Settings</a>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Progress Analytics</h1>
+            <p class="text-gray-600">Track your study performance and insights</p>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl p-6 shadow-sm">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-book text-indigo-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-gray-500 text-sm">Subjects</h3>
+                        <p id="totalSubjects" class="text-2xl font-bold text-gray-800">0</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl p-6 shadow-sm">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-gray-500 text-sm">Tasks Completed</h3>
+                        <p id="completedTasks" class="text-2xl font-bold text-gray-800">0</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl p-6 shadow-sm">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-clock text-blue-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-gray-500 text-sm">Study Hours</h3>
+                        <p id="studyHours" class="text-2xl font-bold text-gray-800">0</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl p-6 shadow-sm">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-chart-line text-purple-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-gray-500 text-sm">Productivity</h3>
+                        <p id="productivityScore" class="text-2xl font-bold text-gray-800">0%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <!-- Task Completion Chart -->
+            <div class="bg-white rounded-xl p-6 shadow-sm">
+                <h3 class="text-xl font-bold text-gray-800 mb-6">Task Completion</h3>
+                <div class="flex items-center justify-center">
+                    <div class="relative w-48 h-48">
+                        <svg class="w-full h-full" viewBox="0 0 100 100">
+                            <!-- Background circle -->
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#e5e7eb" stroke-width="8"/>
+                            <!-- Progress circle -->
+                            <circle id="completionCircle" cx="50" cy="50" r="45" fill="none" stroke="#4f46e5" 
+                                    stroke-width="8" stroke-linecap="round" class="progress-ring-circle"/>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center">
+                                <span id="completionPercent" class="text-3xl font-bold text-gray-800">0%</span>
+                                <p class="text-gray-500 text-sm">Completed</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 space-y-3">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Pending Tasks</span>
+                        <span id="pendingCount" class="font-semibold">0</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Completed Tasks</span>
+                        <span id="completedCount" class="font-semibold">0</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Total Tasks</span>
+                        <span id="totalTasksCount" class="font-semibold">0</span>
+                    </div>
+                </div>
+            </div>
+
+        <!-- Recent Activity -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-8 mt-2">
+            <h3 class="text-xl font-bold text-gray-800 mb-6">Recent Activity</h3>
+            <div id="activityList" class="space-y-4">
+                <!-- Activity items will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Study Goals -->
+        <div class="bg-white rounded-xl p-6 shadow-sm">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-gray-800">Study Goals</h3>
+                <button onclick="addGoal()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+                    <i class="fas fa-plus mr-2"></i>Add Goal
+                </button>
+            </div>
+            <div id="goalsList" class="space-y-4">
+                <!-- Goals will be loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12 mt-12">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-8 md:mb-0">
+                    <div class="flex items-center">
+                        <img src="./Assets/Planner.png" alt="Planner" class="w-12 h-12">
+                        <div class="text-center ml-4">
+                            <h1 class="font-bold text-3xl">StudySync</h1>
+                            <p class="text-sm text-gray-300">Smart Study Planner</p>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-gray-400 max-w-md">Your all-in-one solution for academic organization, planning, and progress tracking. Achieve more with less stress.</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="https://github.com/ShivangChaurasia" target="_blank" class="text-gray-300 hover:text-white"><i class="fab fa-github text-2xl"></i></a>
+                    <a href="https://www.linkedin.com/in/shivang-chaurasia-754232297" target="_blank" class="text-gray-300 hover:text-white"><i class="fab fa-linkedin text-2xl"></i></a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-10 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 StudySync Smart Study Planner. All rights reserved.</p>
+                <p class="mt-2">Designed to help students achieve academic excellence.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+
+    // Apply dark mode on page load for all pages
+    document.addEventListener('DOMContentLoaded', function() {
+        const isDarkMode = localStorage.getItem('studysync-theme') === 'true';
+        if (isDarkMode) {
+            document.body.classList.add('dark-mode');
+        }
+        
+        // Add dark mode styles to every page
+        const style = document.createElement('style');
+        style.textContent = `
+            .dark-mode {
+                background-color: #111827 !important;
+                color: #f9fafb !important;
+            }
+            
+            .dark-mode .bg-gray-50,
+            .dark-mode .bg-gray-100 {
+                background-color: #1f2937 !important;
+            }
+            
+            .dark-mode .bg-white {
+                background-color: #374151 !important;
+            }
+            
+            .dark-mode .text-gray-800,
+            .dark-mode .text-gray-700 {
+                color: #f9fafb !important;
+            }
+            
+            .dark-mode .text-gray-600,
+            .dark-mode .text-gray-500 {
+                color: #d1d5db !important;
+            }
+            
+            .dark-mode nav {
+                background-color: #1f2937 !important;
+                border-bottom: 1px solid #4b5563 !important;
+            }
+            
+            .dark-mode .bg-indigo-50 {
+                background-color: #3730a3 !important;
+            }
+            
+            .dark-mode .border {
+                border-color: #4b5563 !important;
+            }
+            
+            .dark-mode input,
+            .dark-mode select,
+            .dark-mode textarea {
+                background-color: #4b5563 !important;
+                color: #f9fafb !important;
+                border-color: #6b7280 !important;
+            }
+            
+            .dark-mode .bg-gray-200 {
+                background-color: #4b5563 !important;
+            }
+            
+            .dark-mode .bg-red-100 {
+                background-color: #7f1d1d !important;
+            }
+            
+            .dark-mode .text-red-700 {
+                color: #fca5a5 !important;
+            }
+            
+            .dark-mode .bg-indigo-100 {
+                background-color: #3730a3 !important;
+            }
+            
+            .dark-mode .text-indigo-700 {
+                color: #c7d2fe !important;
+            }
+            
+            .dark-mode footer {
+                background-color: #111827 !important;
+                border-top: 1px solid #374151 !important;
+            }
+            
+            .dark-mode footer .text-gray-300 {
+                color: #d1d5db !important;
+            }
+            
+            .dark-mode footer .text-gray-400 {
+                color: #9ca3af !important;
+            }
+            
+            .dark-mode footer .border-gray-700 {
+                border-color: #4b5563 !important;
+            }
+            
+            .dark-mode footer .hover\\:text-white:hover {
+                color: #ffffff !important;
+            }
+            
+            .dark-mode .stats-card {
+                background: linear-gradient(to right, #374151, #4b5563) !important;
+            }
+            
+            .dark-mode .feature-card,
+            .dark-mode .task-card,
+            .dark-mode .settings-card {
+                background-color: #374151 !important;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+            }
+            
+            .dark-mode .feature-card:hover,
+            .dark-mode .task-card:hover,
+            .dark-mode .settings-card:hover {
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4) !important;
+            }
+            
+            .dark-mode .modal-content {
+                background-color: #374151 !important;
+            }
+            
+            .dark-mode .nav-link:after {
+                background-color: #818cf8 !important;
+            }
+        `;
+        document.head.appendChild(style);
+    });
     
+        // Initialize localStorage for goals if not exists
+        if (!localStorage.getItem("studyGoals")) {
+            localStorage.setItem("studyGoals", JSON.stringify([
+                { id: 1, text: "Complete all high priority tasks", completed: false },
+                { id: 2, text: "Study 20 hours this week", completed: false },
+                { id: 3, text: "Achieve 80% task completion rate", completed: false }
+            ]));
+        }
+        
+        if (!localStorage.getItem("studyActivity")) {
+            localStorage.setItem("studyActivity", JSON.stringify([]));
+        }
+        
+        function loadProgressData() {
+            // Load basic stats
+            const subjects = JSON.parse(localStorage.getItem("subjectList")) || [];
+            const tasks = JSON.parse(localStorage.getItem("taskList")) || [];
+            const schedule = JSON.parse(localStorage.getItem("studySchedule")) || [];
+            
+            // Update stats
+            document.getElementById('totalSubjects').textContent = subjects.length;
+            
+            const completedTasks = tasks.filter(t => t.completed).length;
+            document.getElementById('completedTasks').textContent = completedTasks;
+            
+            // Calculate study hours from schedule
+            let totalHours = 0;
+            schedule.forEach(session => {
+                const start = new Date(`2000-01-01T${session.startTime}`);
+                const end = new Date(`2000-01-01T${session.endTime}`);
+                totalHours += (end - start) / (1000 * 60 * 60);
+            });
+            document.getElementById('studyHours').textContent = totalHours.toFixed(1);
+            
+            // Calculate productivity score
+            const productivity = tasks.length > 0 ? Math.round((completedTasks / tasks.length) * 100) : 0;
+            document.getElementById('productivityScore').textContent = `${productivity}%`;
+            
+            // Task completion chart
+            const totalTasks = tasks.length;
+            const pendingTasks = totalTasks - completedTasks;
+            const completionPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            
+            document.getElementById('completionPercent').textContent = `${completionPercent}%`;
+            document.getElementById('pendingCount').textContent = pendingTasks;
+            document.getElementById('completedCount').textContent = completedTasks;
+            document.getElementById('totalTasksCount').textContent = totalTasks;
+            
+            // Animate the circle
+            const circle = document.getElementById('completionCircle');
+            const radius = 45;
+            const circumference = 2 * Math.PI * radius;
+            const offset = circumference - (completionPercent / 100) * circumference;
+            circle.style.strokeDasharray = `${circumference} ${circumference}`;
+            circle.style.strokeDashoffset = offset;
+            
+            // Study time chart
+            loadStudyTimeChart(subjects, schedule);
+            
+            // Load activity
+            loadActivity();
+            
+            // Load goals
+            loadGoals();
+        }
+        
+        function loadStudyTimeChart(subjects, schedule) {
+            const chart = document.getElementById('timeChart');
+            chart.innerHTML = '';
+            
+            if (subjects.length === 0) {
+                chart.innerHTML = '<p class="text-gray-500 w-full text-center">No subjects added yet</p>';
+                return;
+            }
+            
+            // Calculate hours per subject
+            const subjectHours = {};
+            subjects.forEach(subject => {
+                subjectHours[subject.subName] = 0;
+            });
+            
+            schedule.forEach(session => {
+                if (subjectHours.hasOwnProperty(session.subject)) {
+                    const start = new Date(`2000-01-01T${session.startTime}`);
+                    const end = new Date(`2000-01-01T${session.endTime}`);
+                    const hours = (end - start) / (1000 * 60 * 60);
+                    subjectHours[session.subject] += hours;
+                }
+            });
+            
+            // Find max hours for scaling
+            const maxHours = Math.max(...Object.values(subjectHours));
+            
+            // Generate bars
+            Object.entries(subjectHours).forEach(([subject, hours]) => {
+                const barHeight = maxHours > 0 ? (hours / maxHours) * 100 : 0;
+                const bar = document.createElement('div');
+                bar.className = 'flex-1 flex flex-col items-center';
+                bar.innerHTML = `
+                    <div class="chart-bar w-full bg-indigo-500 rounded-t-lg mb-2" style="height: ${barHeight}%"></div>
+                    <div class="text-xs text-gray-600 text-center">
+                        <div class="font-semibold truncate w-full">${subject}</div>
+                        <div>${hours.toFixed(1)}h</div>
+                    </div>
+                `;
+                chart.appendChild(bar);
+            });
+        }
+        
+        function loadActivity() {
+            const activityList = document.getElementById('activityList');
+            let activities = JSON.parse(localStorage.getItem("studyActivity")) || [];
+            
+            // Add some sample activities if none exist
+            if (activities.length === 0) {
+                activities = [
+                    { type: 'task', action: 'completed', text: 'Completed Math assignment', time: '2 hours ago' },
+                    { type: 'subject', action: 'added', text: 'Added new subject: Physics', time: 'Yesterday' },
+                    { type: 'schedule', action: 'updated', text: 'Updated study schedule', time: '2 days ago' }
+                ];
+            }
+            
+            if (activities.length === 0) {
+                activityList.innerHTML = '<p class="text-gray-500 text-center py-4">No recent activity</p>';
+                return;
+            }
+            
+            let html = '';
+            activities.forEach(activity => {
+                const icon = activity.type === 'task' ? 'fa-tasks' : 
+                            activity.type === 'subject' ? 'fa-book' : 'fa-calendar';
+                const color = activity.type === 'task' ? 'text-green-500' :
+                            activity.type === 'subject' ? 'text-blue-500' : 'text-purple-500';
+                
+                html += `
+                    <div class="flex items-center p-3 hover:bg-gray-50 rounded-lg">
+                        <div class="w-10 h-10 ${color} bg-gray-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas ${icon}"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-medium text-gray-800">${activity.text}</p>
+                            <p class="text-sm text-gray-500">${activity.time}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            activityList.innerHTML = html;
+        }
+        
+        function loadGoals() {
+            const goalsList = document.getElementById('goalsList');
+            const goals = JSON.parse(localStorage.getItem("studyGoals")) || [];
+            
+            if (goals.length === 0) {
+                goalsList.innerHTML = '<p class="text-gray-500 text-center py-4">No goals set yet</p>';
+                return;
+            }
+            
+            let html = '';
+            goals.forEach((goal, index) => {
+                html += `
+                    <div class="flex items-center p-4 border border-gray-200 rounded-lg">
+                        <div class="checkbox-custom ${goal.completed ? 'checked' : ''} mr-4" onclick="toggleGoal(${index})"></div>
+                        <div class="flex-1 ${goal.completed ? 'line-through text-gray-500' : 'text-gray-800'}">
+                            ${goal.text}
+                        </div>
+                        <button onclick="deleteGoal(${index})" class="text-gray-400 hover:text-red-500 ml-2">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+            });
+            
+            goalsList.innerHTML = html;
+        }
+        
+        function addGoal() {
+            const text = prompt('Enter your study goal:');
+            if (text) {
+                const goals = JSON.parse(localStorage.getItem("studyGoals")) || [];
+                goals.push({
+                    id: Date.now(),
+                    text: text,
+                    completed: false
+                });
+                localStorage.setItem("studyGoals", JSON.stringify(goals));
+                loadGoals();
+            }
+        }
+        
+        function toggleGoal(index) {
+            const goals = JSON.parse(localStorage.getItem("studyGoals")) || [];
+            if (index >= 0 && index < goals.length) {
+                goals[index].completed = !goals[index].completed;
+                localStorage.setItem("studyGoals", JSON.stringify(goals));
+                loadGoals();
+            }
+        }
+        
+        function deleteGoal(index) {
+            if (confirm('Delete this goal?')) {
+                const goals = JSON.parse(localStorage.getItem("studyGoals")) || [];
+                goals.splice(index, 1);
+                localStorage.setItem("studyGoals", JSON.stringify(goals));
+                loadGoals();
+            }
+        }
+        
+        // Initialize
+        window.onload = loadProgressData;
+    </script>
 </body>
 </html>
