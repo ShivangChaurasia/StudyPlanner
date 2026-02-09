@@ -73,7 +73,9 @@
     </style>
 </head>
 <body class="bg-gray-50">
-    <!-- Navigation -->
+
+
+    <!-- Navigation ==================================================================================================================== -->
     <nav class="p-6 flex justify-between items-center bg-white shadow-md sticky top-0 z-50">
         <div class="flex items-center ml-6">
             <img src="./Assets/Planner.png" alt="Planner" class="w-12 h-12">
@@ -93,7 +95,7 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero Section ==================================================================================================================== -->
     <section class="hero-gradient text-white py-20 px-6">
         <div class="max-w-6xl mx-auto text-center">
             <h1 id="greet-head" class="text-5xl font-bold mb-6"></h1>
@@ -192,7 +194,7 @@
         </div>
     </section>
 
-    <!-- Dashboard -->
+    <!-- Dashboard ==================================================================================================================== -->
     <section class="py-20 bg-white">
         <div class="max-w-6xl mx-auto px-6">
             <div class="flex flex-col lg:flex-row items-center">
@@ -227,7 +229,7 @@
         </div>
     </section>
 
-    <!-- Testimonial -->
+    <!-- Testimonial ==================================================================================================================== -->
     <section class="py-20 bg-gray-50">
         <div class="max-w-6xl mx-auto px-6">
             <h2 class="text-4xl font-bold text-center text-gray-800 mb-4">Trusted by Students Worldwide</h2>
@@ -297,7 +299,7 @@
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Footer ==================================================================================================================== -->
     <footer class="bg-gray-800 text-white py-12">
         <div class="max-w-6xl mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-center">
@@ -330,14 +332,14 @@
     </footer>
 
     <script>
-    // Apply dark mode on page load for all pages
+
+    // dark mode for all pages==================================================================================
     document.addEventListener('DOMContentLoaded', function() {
         const isDarkMode = localStorage.getItem('studysync-theme') === 'true';
         if (isDarkMode) {
             document.body.classList.add('dark-mode');
         }
-        
-        // Add dark mode styles to every page
+
         const style = document.createElement('style');
         style.textContent = `
             .dark-mode {
@@ -453,6 +455,8 @@
         `;
         document.head.appendChild(style);
     });
+
+        // Typewriter effect for greeting==================================================================================
         function typeText(element, text, speed) {
             let i = 0;
             element.innerHTML = '';
@@ -468,6 +472,7 @@
             type();
         }
 
+        // Set greeting based on time of day==================================================================================
         function setGreeting() {
             const greetHead = document.getElementById('greet-head');
             const currentHour = new Date().getHours();
