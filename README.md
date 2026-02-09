@@ -99,7 +99,7 @@ Smart-Study-Planner/
 ---
 Clone the repository
 ```
-git clone https://github.com/your-username/studysync.git
+git clone https://github.com/ShivangChaurasia/StudySync.git
 ```
 Open index.html in any modern browser
 Start adding subjects and tasks 🎯
