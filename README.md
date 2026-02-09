@@ -56,16 +56,18 @@ Live Link : https://shivangchaurasia.github.io/StudyPlanner/
 Smart-Study-Planner/
 │
 ├── docs/
-|    ├── index.html
-|    ├── Dashboard.html
-|    ├── subject.html
-|    ├── schedule.html
-|    ├── task.html
-|    ├── progress.html
-|    ├── settings.html
+|    └── index.html
+|    └── Dashboard.html
+|    └── subject.html
+|    └── schedule.html
+|    └── task.html
+|    └── progress.html
+|    └── settings.html
 │
 ├── Assets/
-│   └── Planner.png
+│    └── Planner.png
+|    └── Favicon.png
+|    └── Study.json  //Lottie Animation
 │
 └── README.md
 ```
