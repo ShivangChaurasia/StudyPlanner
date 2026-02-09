@@ -55,13 +55,14 @@ Live Link : https://shivangchaurasia.github.io/StudyPlanner/
 ```
 Smart-Study-Planner/
 │
-├── index.html
-├── Dashboard.html
-├── subject.html
-├── schedule.html
-├── task.html
-├── progress.html
-├── settings.html
+├── docs/
+|    ├── index.html
+|    ├── Dashboard.html
+|    ├── subject.html
+|    ├── schedule.html
+|    ├── task.html
+|    ├── progress.html
+|    ├── settings.html
 │
 ├── Assets/
 │   └── Planner.png
