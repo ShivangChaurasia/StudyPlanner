@@ -66,7 +66,7 @@
     <!-- Navigation -->
     <nav class="p-6 flex justify-between items-center bg-white shadow-md sticky top-0 z-50">
         <div class="flex items-center ml-6">
-            <img src="./Assets/Planner.png" alt="Planner" class="w-12 h-12">
+            <img src="/Assets/Planner.png" alt="Planner" class="w-12 h-12">
             <div class="text-center ml-4">
                 <h1 class="font-bold text-3xl text-gray-800">StudySync</h1>
                 <p class="text-sm text-gray-500">Smart Study Planner</p>
@@ -118,7 +118,7 @@
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-8 md:mb-0">
                     <div class="flex items-center">
-                        <img src="./Assets/Planner.png" alt="Planner" class="w-12 h-12">
+                        <img src="/Assets/Planner.png" alt="Planner" class="w-12 h-12">
                         <div class="text-center ml-4">
                             <h1 class="font-bold text-3xl">StudySync</h1>
                             <p class="text-sm text-gray-300">Smart Study Planner</p>
@@ -270,8 +270,8 @@
         document.head.appendChild(style);
     });
 
-    
-// Subject Manager JavaScript which help storing data on browser local storage
+
+// Subject Manager JavaScript which help storing data on browser local storage===================================================================
 
     if (!localStorage.getItem("subjectList")) {
         localStorage.setItem("subjectList", JSON.stringify([]));
@@ -289,7 +289,7 @@
         subjectList.push({ subName, priority });
         localStorage.setItem("subjectList", JSON.stringify(subjectList));
         document.getElementById("subjectForm").reset();
-        renderSubjects(); // 🔥 re-render UI
+        renderSubjects(); 
     }
 
 
