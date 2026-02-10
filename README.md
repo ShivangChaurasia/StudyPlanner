@@ -3,7 +3,7 @@
 StudySync is a responsive web-based Smart Study Planner designed to help students organize subjects, manage tasks, plan schedules, and track academic progress efficiently.
 The application is built using HTML, Tailwind CSS, and Vanilla JavaScript, with LocalStorage used for data persistence.
 
-Live Link : https://shivangchaurasia.github.io/StudyPlanner/
+Live Link : https://shivangchaurasia.github.io/StudySync/
 
 ---
 🚀 Features
@@ -56,16 +56,18 @@ Live Link : https://shivangchaurasia.github.io/StudyPlanner/
 Smart-Study-Planner/
 │
 ├── docs/
-|    ├── index.html
-|    ├── Dashboard.html
-|    ├── subject.html
-|    ├── schedule.html
-|    ├── task.html
-|    ├── progress.html
-|    ├── settings.html
+|    └── index.html
+|    └── Dashboard.html
+|    └── subject.html
+|    └── schedule.html
+|    └── task.html
+|    └── progress.html
+|    └── settings.html
 │
 ├── Assets/
-│   └── Planner.png
+│    └── Planner.png
+|    └── Favicon.png
+|    └── Study.json  //Lottie Animation
 │
 └── README.md
 ```
@@ -97,7 +99,7 @@ Smart-Study-Planner/
 ---
 Clone the repository
 ```
-git clone https://github.com/your-username/studysync.git
+git clone https://github.com/ShivangChaurasia/StudySync.git
 ```
 Open index.html in any modern browser
 Start adding subjects and tasks 🎯
