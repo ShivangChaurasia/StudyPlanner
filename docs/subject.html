@@ -3,70 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="./Assets/Favicon.png">
+    
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subject Manager | Smart Study Planner</title>
+    <title>Subject Manager | StudySync</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* --- Global Animated Background (Fixed) --- */
+        .global-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -10;
+            background: linear-gradient(135deg, #f5f7fa 0%, #eef2f3 100%);
+        }
+
+        body.dark-mode .global-bg {
+            background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+        }
+
+        /* Animated Circles */
+        .circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .circles li {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: rgba(102, 126, 234, 0.15);
+            animation: animate 25s linear infinite;
+            bottom: -150px;
+            border-radius: 20%;
+        }
+
+        .circles li:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
+        .circles li:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
+        .circles li:nth-child(3) { left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
+        .circles li:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
+        .circles li:nth-child(5) { left: 65%; width: 20px; height: 20px; animation-delay: 0s; }
+        .circles li:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3s; }
+
+        @keyframes animate {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 10%; }
+            100% { transform: translateY(-120vh) rotate(720deg); opacity: 0; border-radius: 50%; }
+        }
+
+        /* --- Components --- */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        }
+
+        body.dark-mode .glass-panel {
+            background: rgba(31, 41, 55, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: #f3f4f6;
+        }
+
+        /* Nav Link Styles */
+        .nav-link { position: relative; overflow: hidden; }
+        .nav-link:after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px;
+            background-color: #4f46e5; transform: translateX(-100%); transition: transform 0.3s ease;
+        }
+        .nav-link:hover:after { transform: translateX(0); }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
+<body class="bg-transparent text-gray-800">
 
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-    * {
-        font-family: 'Poppins', sans-serif;
-    }
-    .hero-gradient {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-    .feature-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .feature-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    }
-    .stats-card {
-        background: linear-gradient(to right, #f8f9fa, #e9ecef);
-    }
-    .typing-cursor {
-        display: inline-block;
-        width: 3px;
-        background-color: #333;
-        animation: blink 1s infinite;
-        margin-left: 2px;
-    }
-    @keyframes blink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0; }
-    }
-    .nav-link {
-        position: relative;
-        overflow: hidden;
-    }
-    .nav-link:after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background-color: #4f46e5;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
-    }
-    .nav-link:hover:after {
-        transform: translateX(0);
-    }
-    .dashboard-preview {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        border-radius: 12px;
-    }
-</style>
-<body>
-    <!-- Subject Management: Add, edit, delete subjects with priorities. -->
+    <div class="global-bg">
+        <ul class="circles">
+            <li></li><li></li><li></li><li></li><li></li>
+            <li></li><li></li><li></li><li></li><li></li>
+        </ul>
+    </div>
 
-    <!-- Navigation -->
-    <nav class="p-6 flex justify-between items-center bg-white shadow-md sticky top-0 z-50">
+    <nav class="p-6 flex justify-between items-center bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50">
         <div class="flex items-center ml-6">
-            <img src="./Assets/Planner.png" alt="Planner" class="w-12 h-12">
+            <img src="./Assets/Planner.png" alt="Planner" class="w-12 h-12 hover:rotate-12 transition-transform">
             <div class="text-center ml-4">
                 <h1 class="font-bold text-3xl text-gray-800">StudySync</h1>
                 <p class="text-sm text-gray-500">Smart Study Planner</p>
@@ -75,7 +121,7 @@
         <div class="flex items-center mr-6">
             <a href="index.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Home</a>
             <a href="Dashboard.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Dashboard</a>
-            <a href="subject.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Subject Manager</a>
+            <a href="subject.html" class="px-4 py-2 text-indigo-600 font-bold nav-link">Subject Manager</a>
             <a href="schedule.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Schedule Planner</a>
             <a href="task.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Task Manager</a>
             <a href="progress.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Progress Tracker</a>
@@ -83,37 +129,64 @@
         </div>
     </nav>
 
+    <section class="max-w-6xl mx-auto px-6 py-12">
+        
+        <div class="text-center mb-12">
+            <div class="flex justify-center mb-4">
+                <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center text-green-600 shadow-sm">
+                    <i class="fas fa-layer-group text-3xl"></i>
+                </div>
+            </div>
+            <h2 class="text-4xl font-bold text-gray-800 mb-2">Subject Manager</h2>
+            <p class="text-gray-500 max-w-xl mx-auto">Organize your academic life. Add subjects, set priorities, and keep your curriculum structured.</p>
+        </div>
 
-    <section>
-        <div class="max-w-6xl mx-auto px-6 py-12">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8">Subject Manager</h2>
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <form id="subjectForm" class="mb-6" onsubmit="event.preventDefault(); addSubject();">
-                    <legend class="text-lg font-bold text-gray-800 mb-2">Add New Subject</legend>
-                    <div class="flex flex-col md:flex-row md:space-x-4 mb-4">
-                        <input id="subName" type="text" placeholder="Subject Name" class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4 md:mb-0">
-                        <select id="priority" class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="" disabled selected>Priority</option>
-                            <option value="High">High</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Low">Low</option>
-                        </select>
-                        <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-300">Add Subject</button>
+        <div class="glass-panel rounded-2xl p-8 mb-16 shadow-lg max-w-3xl mx-auto border-t-4 border-indigo-500">
+            <form id="subjectForm" class="flex flex-col md:flex-row gap-4 items-end" onsubmit="event.preventDefault(); addSubject();">
+                <div class="flex-1 w-full">
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Subject Name</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-book text-gray-400"></i>
+                        </div>
+                        <input id="subName" type="text" placeholder="e.g. Advanced Calculus" 
+                            class="w-full pl-10 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white/50 backdrop-blur-sm transition-all">
                     </div>
-                </form>
-            </div>
+                </div>
+                
+                <div class="w-full md:w-48">
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Priority</label>
+                    <div class="relative">
+                        <select id="priority" 
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white/50 backdrop-blur-sm appearance-none cursor-pointer">
+                            <option value="" disabled selected>Select Level</option>
+                            <option value="High">High 🔥</option>
+                            <option value="Medium">Medium ⚖️</option>
+                            <option value="Low">Low ☘️</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                            <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full md:w-auto px-8 py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 shadow-lg hover:shadow-indigo-500/30 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                    <i class="fas fa-plus"></i> Add
+                </button>
+            </form>
         </div>
 
-        <div class="max-w-6xl mx-auto px-6 pb-12">
-            <div id="subjectCardContainer"
-                 class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            </div>
+        <div class="mb-8 flex items-center justify-between">
+            <h3 class="text-xl font-bold text-gray-800">Your Subjects</h3>
+            <span id="subjectCount" class="bg-indigo-100 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full">0 Subjects</span>
         </div>
+
+        <div id="subjectCardContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
     </section>
 
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-12 mt-27">
+    <footer class="bg-gray-800 text-white py-12">
         <div class="max-w-6xl mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-8 md:mb-0">
@@ -143,217 +216,208 @@
             </div>
         </div>
     </footer>
-</body>
 
-<script>
-    // Apply dark mode on page load for all pages
-    document.addEventListener('DOMContentLoaded', function() {
+    <script>
+        // --- 1. Dark Mode Logic ---
+   document.addEventListener('DOMContentLoaded', function() {
         const isDarkMode = localStorage.getItem('studysync-theme') === 'true';
         if (isDarkMode) {
             document.body.classList.add('dark-mode');
         }
-        
-        // Add dark mode styles to every page
+
         const style = document.createElement('style');
         style.textContent = `
             .dark-mode {
                 background-color: #111827 !important;
                 color: #f9fafb !important;
             }
-            
-            .dark-mode .bg-gray-50,
-            .dark-mode .bg-gray-100 {
+            .dark-mode .bg-gray-50, .dark-mode .bg-gray-100 {
                 background-color: #1f2937 !important;
             }
-            
             .dark-mode .bg-white {
                 background-color: #374151 !important;
             }
-            
-            .dark-mode .text-gray-800,
-            .dark-mode .text-gray-700 {
+            .dark-mode .text-gray-800, .dark-mode .text-gray-700 {
                 color: #f9fafb !important;
             }
-            
-            .dark-mode .text-gray-600,
-            .dark-mode .text-gray-500 {
+            .dark-mode .text-gray-600, .dark-mode .text-gray-500 {
                 color: #d1d5db !important;
             }
-            
             .dark-mode nav {
                 background-color: #1f2937 !important;
                 border-bottom: 1px solid #4b5563 !important;
             }
-            
             .dark-mode .bg-indigo-50 {
                 background-color: #3730a3 !important;
             }
-            
             .dark-mode .border {
                 border-color: #4b5563 !important;
             }
-            
-            .dark-mode input,
-            .dark-mode select,
-            .dark-mode textarea {
+            .dark-mode input, .dark-mode select, .dark-mode textarea {
                 background-color: #4b5563 !important;
                 color: #f9fafb !important;
                 border-color: #6b7280 !important;
             }
-            
-            .dark-mode .bg-gray-200 {
-                background-color: #4b5563 !important;
-            }
-            
-            .dark-mode .bg-red-100 {
-                background-color: #7f1d1d !important;
-            }
-            
-            .dark-mode .text-red-700 {
-                color: #fca5a5 !important;
-            }
-            
-            .dark-mode .bg-indigo-100 {
-                background-color: #3730a3 !important;
-            }
-            
-            .dark-mode .text-indigo-700 {
-                color: #c7d2fe !important;
-            }
-            
+            .dark-mode .bg-gray-200 { background-color: #4b5563 !important; }
+            .dark-mode .bg-red-100 { background-color: #7f1d1d !important; }
+            .dark-mode .text-red-700 { color: #fca5a5 !important; }
+            .dark-mode .bg-indigo-100 { background-color: #3730a3 !important; }
+            .dark-mode .text-indigo-700 { color: #c7d2fe !important; }
             .dark-mode footer {
                 background-color: #111827 !important;
                 border-top: 1px solid #374151 !important;
             }
-            
-            .dark-mode footer .text-gray-300 {
-                color: #d1d5db !important;
-            }
-            
-            .dark-mode footer .text-gray-400 {
-                color: #9ca3af !important;
-            }
-            
-            .dark-mode footer .border-gray-700 {
-                border-color: #4b5563 !important;
-            }
-            
-            .dark-mode footer .hover\\:text-white:hover {
-                color: #ffffff !important;
-            }
-            
+            .dark-mode footer .text-gray-300 { color: #d1d5db !important; }
+            .dark-mode footer .text-gray-400 { color: #9ca3af !important; }
+            .dark-mode footer .border-gray-700 { border-color: #4b5563 !important; }
+            .dark-mode footer .hover\\:text-white:hover { color: #ffffff !important; }
             .dark-mode .stats-card {
                 background: linear-gradient(to right, #374151, #4b5563) !important;
             }
-            
-            .dark-mode .feature-card,
-            .dark-mode .task-card,
-            .dark-mode .settings-card {
+            .dark-mode .feature-card, .dark-mode .task-card, .dark-mode .settings-card {
                 background-color: #374151 !important;
                 box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
             }
-            
-            .dark-mode .feature-card:hover,
-            .dark-mode .task-card:hover,
-            .dark-mode .settings-card:hover {
+            .dark-mode .feature-card:hover, .dark-mode .task-card:hover, .dark-mode .settings-card:hover {
                 box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4) !important;
             }
-            
-            .dark-mode .modal-content {
-                background-color: #374151 !important;
-            }
-            
-            .dark-mode .nav-link:after {
-                background-color: #818cf8 !important;
-            }
+            .dark-mode .modal-content { background-color: #374151 !important; }
+            .dark-mode .nav-link:after { background-color: #818cf8 !important; }
         `;
         document.head.appendChild(style);
     });
 
+        // --- 2. Subject Manager Logic ---
 
-// Subject Manager JavaScript which help storing data on browser local storage===================================================================
-
-    if (!localStorage.getItem("subjectList")) {
-        localStorage.setItem("subjectList", JSON.stringify([]));
-    }
-
-
-    function addSubject() {
-        let subName = document.getElementById("subName").value;
-        let priority = document.getElementById("priority").value;
-        if (subName === "" || priority === "") {
-            alert("Please fill in all fields");
-            return;
-        }
-        let subjectList = JSON.parse(localStorage.getItem("subjectList")) || [];
-        subjectList.push({ subName, priority });
-        localStorage.setItem("subjectList", JSON.stringify(subjectList));
-        document.getElementById("subjectForm").reset();
-        renderSubjects(); 
-    }
-
-
-    function renderSubjects() {
-        let subjectCardContainer = document.getElementById("subjectCardContainer");
-        subjectCardContainer.innerHTML = ""; // clear old UI
-
-        let subjectList = JSON.parse(localStorage.getItem("subjectList")) || [];
-        if (subjectList.length === 0) {
-            subjectCardContainer.innerHTML = `
-                <div class="col-span-full text-center text-gray-500 py-12">
-                    No subjects added yet. Start by adding one above 📘
-                </div>
-            `;
-            return;
+        // Initialize Local Storage
+        if (!localStorage.getItem("subjectList")) {
+            localStorage.setItem("subjectList", JSON.stringify([]));
         }
 
-        subjectList.forEach((subject, index) => {
-            let card = document.createElement("div");
+        function addSubject() {
+            let subName = document.getElementById("subName").value;
+            let priority = document.getElementById("priority").value;
+            
+            if (subName === "" || priority === "") {
+                alert("Please fill in all fields");
+                return;
+            }
+            
+            let subjectList = JSON.parse(localStorage.getItem("subjectList")) || [];
+            subjectList.push({ subName, priority });
+            localStorage.setItem("subjectList", JSON.stringify(subjectList));
+            
+            document.getElementById("subjectForm").reset();
+            renderSubjects(); 
+        }
 
-            card.innerHTML = `
-                <div class="border border-gray-200 rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">${subject.subName}</h3>
-                    <p class="text-gray-600 mb-4">Priority: ${subject.priority}</p>
+        function renderSubjects() {
+            let subjectCardContainer = document.getElementById("subjectCardContainer");
+            let countLabel = document.getElementById("subjectCount");
+            subjectCardContainer.innerHTML = ""; 
 
-                    <div class="flex gap-3">
-                        <button onclick="deleteSubject(${index})"
-                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
-                            Delete
-                        </button>
+            let subjectList = JSON.parse(localStorage.getItem("subjectList")) || [];
+            
+            // Update Count Label
+            countLabel.innerText = `${subjectList.length} Subject${subjectList.length !== 1 ? 's' : ''}`;
 
-                        <button onclick="editSubject(${index})"
-                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                            Edit
-                        </button>
+            // Empty State
+            if (subjectList.length === 0) {
+                subjectCardContainer.innerHTML = `
+                    <div class="col-span-full flex flex-col items-center justify-center py-12 opacity-80">
+                        <lottie-player 
+                            src="https://assets10.lottiefiles.com/packages/lf20_w51pcehl.json" 
+                            background="transparent" 
+                            speed="1" 
+                            style="width: 200px; height: 200px;" 
+                            loop 
+                            autoplay>
+                        </lottie-player>
+                        <p class="text-gray-500 mt-4 text-lg">No subjects yet. Add one above to get started!</p>
                     </div>
-                </div>
-            `;
+                `;
+                return;
+            }
 
-            subjectCardContainer.appendChild(card);
-        });
-    }
+            // Render Cards
+            subjectList.forEach((subject, index) => {
+                let card = document.createElement("div");
+                
+                // Color Logic
+                let accentColor = "indigo";
+                let badgeColor = "bg-indigo-100 text-indigo-700";
+                
+                if(subject.priority === "High") {
+                    accentColor = "red";
+                    badgeColor = "bg-red-100 text-red-700";
+                } else if(subject.priority === "Medium") {
+                    accentColor = "orange";
+                    badgeColor = "bg-orange-100 text-orange-700";
+                } else {
+                    accentColor = "green";
+                    badgeColor = "bg-green-100 text-green-700";
+                }
 
-    renderSubjects();
+                card.innerHTML = `
+                    <div class="glass-panel p-6 rounded-2xl relative group hover:-translate-y-1 transition-all duration-300 border-l-4 border-${accentColor}-500 feature-card">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-3 bg-${accentColor}-50 rounded-xl">
+                                <i class="fas fa-book text-${accentColor}-500 text-xl"></i>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${badgeColor}">
+                                ${subject.priority}
+                            </span>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold text-gray-800 mb-6">${subject.subName}</h3>
+                        
+                        <div class="flex gap-2 pt-4 border-t border-gray-100 mt-auto">
+                            <button onclick="editSubject(${index})"
+                                class="flex-1 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-colors text-sm font-semibold flex items-center justify-center gap-2">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button onclick="deleteSubject(${index})"
+                                class="flex-1 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-red-50 hover:text-red-600 transition-colors text-sm font-semibold flex items-center justify-center gap-2">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
 
+                subjectCardContainer.appendChild(card);
+            });
+        }
 
-    function deleteSubject(index) {
-        let subjectList = JSON.parse(localStorage.getItem("subjectList")) || [];
-        subjectList.splice(index, 1);
-        localStorage.setItem("subjectList", JSON.stringify(subjectList));
+        function deleteSubject(index) {
+            let subjectList = JSON.parse(localStorage.getItem("subjectList")) || [];
+            if(confirm("Are you sure you want to delete this subject?")) {
+                subjectList.splice(index, 1);
+                localStorage.setItem("subjectList", JSON.stringify(subjectList));
+                renderSubjects();
+            }
+        }
+
+        function editSubject(index) {
+            let subjectList = JSON.parse(localStorage.getItem("subjectList")) || [];
+            let subject = subjectList[index];
+
+            // Populate form
+            document.getElementById("subName").value = subject.subName;
+            document.getElementById("priority").value = subject.priority;
+            
+            // Focus on form
+            document.getElementById("subName").focus();
+
+            // Delete old entry so "Add" updates it (Simplistic edit logic)
+            // Ideally we'd switch button state to "Update", but keeping logic intact as requested
+            subjectList.splice(index, 1);
+            localStorage.setItem("subjectList", JSON.stringify(subjectList));
+            renderSubjects();
+        }
+
+        // Initial Render
         renderSubjects();
-    }
 
-     function editSubject(index) {
-        let subjectList = JSON.parse(localStorage.getItem("subjectList")) || [];
-        let subject = subjectList[index];
-
-        document.getElementById("subName").value = subject.subName;
-        document.getElementById("priority").value = subject.priority;
-
-        deleteSubject(index);
-    }
-
-
-
-</script>
+    </script>
+</body>
 </html>

@@ -3,68 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="./Assets/Favicon.png">
+
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Smart Study Planner</title>
+    <title>Dashboard | StudySync</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* --- Global Animated Background (Fixed) --- */
+        .global-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -10;
+            background: linear-gradient(135deg, #f5f7fa 0%, #eef2f3 100%);
+        }
+
+        body.dark-mode .global-bg {
+            background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+        }
+
+        /* Animated Circles */
+        .circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .circles li {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: rgba(102, 126, 234, 0.15);
+            animation: animate 25s linear infinite;
+            bottom: -150px;
+            border-radius: 20%;
+        }
+
+        /* Varied shapes */
+        .circles li:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
+        .circles li:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
+        .circles li:nth-child(3) { left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
+        .circles li:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
+        .circles li:nth-child(5) { left: 65%; width: 20px; height: 20px; animation-delay: 0s; }
+        .circles li:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3s; }
+        
+        @keyframes animate {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 10%; }
+            100% { transform: translateY(-120vh) rotate(720deg); opacity: 0; border-radius: 50%; }
+        }
+
+        /* --- Components --- */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        body.dark-mode .glass-panel {
+            background: rgba(31, 41, 55, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: #f3f4f6;
+        }
+
+        .stats-card {
+            transition: transform 0.3s ease;
+        }
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Nav Link Styles */
+        .nav-link { position: relative; overflow: hidden; }
+        .nav-link:after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px;
+            background-color: #4f46e5; transform: translateX(-100%); transition: transform 0.3s ease;
+        }
+        .nav-link:hover:after { transform: translateX(0); }
+        
+        /* Active link styling (Just color/weight, no forced underline) */
+        .nav-link.active { color: #4f46e5; font-weight: 700; }
+    </style>
 </head>
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-    * {
-        font-family: 'Poppins', sans-serif;
-    }
-    .hero-gradient {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-    .feature-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .feature-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    }
-    .stats-card {
-        background: linear-gradient(to right, #f8f9fa, #e9ecef);
-    }
-    .typing-cursor {
-        display: inline-block;
-        width: 3px;
-        background-color: #333;
-        animation: blink 1s infinite;
-        margin-left: 2px;
-    }
-    @keyframes blink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0; }
-    }
-    .nav-link {
-        position: relative;
-        overflow: hidden;
-    }
-    .nav-link:after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background-color: #4f46e5;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
-    }
-    .nav-link:hover:after {
-        transform: translateX(0);
-    }
-    .dashboard-preview {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        border-radius: 12px;
-    }
-</style>
-<body>
-    <!-- Navigation -->
-    <nav class="p-6 flex justify-between items-center bg-white shadow-md sticky top-0 z-50">
+<body class="bg-transparent text-gray-800">
+
+    <div class="global-bg">
+        <ul class="circles">
+            <li></li><li></li><li></li><li></li><li></li>
+            <li></li><li></li><li></li><li></li><li></li>
+        </ul>
+    </div>
+
+    <nav class="p-6 flex justify-between items-center bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50">
         <div class="flex items-center ml-6">
-            <img src="./Assets/Planner.png" alt="Planner" class="w-12 h-12">
+            <img src="./Assets/Planner.png" alt="Planner" class="w-12 h-12 hover:rotate-12 transition-transform">
             <div class="text-center ml-4">
                 <h1 class="font-bold text-3xl text-gray-800">StudySync</h1>
                 <p class="text-sm text-gray-500">Smart Study Planner</p>
@@ -72,7 +123,7 @@
         </div>
         <div class="flex items-center mr-6">
             <a href="index.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Home</a>
-            <a href="Dashboard.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link bg-indigo-50 rounded-lg">Dashboard</a>
+            <a href="Dashboard.html" class="px-4 py-2 text-indigo-600 font-bold nav-link">Dashboard</a>
             <a href="subject.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Subject Manager</a>
             <a href="schedule.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Schedule Planner</a>
             <a href="task.html" class="px-4 py-2 text-gray-700 hover:text-indigo-600 font-semibold nav-link">Task Manager</a>
@@ -81,57 +132,120 @@
         </div>
     </nav>
 
-    <!-- Dashboard Content -->
     <section class="max-w-6xl mx-auto px-6 py-12">
-        <!-- Page Heading -->
-        <div class="mb-10">
-            <h2 class="text-4xl font-bold text-gray-800">Dashboard</h2>
-            <p class="text-gray-500 mt-2">Overview of your study plan and progress</p>
+        
+        <div class="flex flex-col md:flex-row justify-between items-end mb-10">
+            <div>
+                <h2 class="text-4xl font-bold text-gray-800">Dashboard</h2>
+                <p class="text-gray-500 mt-2">Welcome back! Here's your study overview.</p>
+            </div>
+            <div class="mt-4 md:mt-0">
+                <span id="currentDate" class="text-sm font-medium text-indigo-600 bg-indigo-50 px-4 py-2 rounded-full border border-indigo-100 shadow-sm flex items-center gap-2">
+                    <i class="far fa-calendar-alt"></i> </span>
+            </div>
         </div>
 
-        <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            <div class="stats-card rounded-xl p-6 shadow-sm">
-                <h3 class="text-gray-500 text-sm">Total Subjects</h3>
-                <p id="totalSubjects" class="text-3xl font-bold text-indigo-600 mt-2">0</p>
+            <div class="stats-card glass-panel rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-gray-500 text-xs font-bold uppercase tracking-wider">Total Subjects</h3>
+                    <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                        <i class="fas fa-book text-indigo-600 text-sm"></i>
+                    </div>
+                </div>
+                <p id="totalSubjects" class="text-3xl font-bold text-gray-800 mt-2">0</p>
             </div>
 
-            <div class="stats-card rounded-xl p-6 shadow-sm">
-                <h3 class="text-gray-500 text-sm">High Priority</h3>
-                <p id="highPriorityCount" class="text-3xl font-bold text-red-500 mt-2">0</p>
+            <div class="stats-card glass-panel rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-gray-500 text-xs font-bold uppercase tracking-wider">High Priority</h3>
+                    <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
+                        <i class="fas fa-exclamation text-red-600 text-sm"></i>
+                    </div>
+                </div>
+                <p id="highPriorityCount" class="text-3xl font-bold text-gray-800 mt-2">0</p>
             </div>
 
-            <div class="stats-card rounded-xl p-6 shadow-sm">
-                <h3 class="text-gray-500 text-sm">Total Tasks</h3>
-                <p id="totalTasks" class="text-3xl font-bold text-green-600 mt-2">0</p>
+            <div class="stats-card glass-panel rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-gray-500 text-xs font-bold uppercase tracking-wider">Pending Tasks</h3>
+                    <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                        <i class="fas fa-tasks text-green-600 text-sm"></i>
+                    </div>
+                </div>
+                <p id="totalTasks" class="text-3xl font-bold text-gray-800 mt-2">0</p>
             </div>
 
-            <div class="stats-card rounded-xl p-6 shadow-sm">
-                <h3 class="text-gray-500 text-sm">Today's Focus</h3>
-                <p id="focusSubject" class="text-lg font-semibold text-gray-800 mt-2">—</p>
+            <div class="stats-card glass-panel rounded-2xl p-6 relative overflow-hidden hover:shadow-lg transition-all duration-300 group">
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-gray-500 text-xs font-bold uppercase tracking-wider">Today's Focus</h3>
+                        <div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+                            <i class="fas fa-crosshairs text-orange-600 text-sm"></i>
+                        </div>
+                    </div>
+                    <p id="focusSubject" class="text-lg font-bold text-gray-800 truncate mt-2">No Data</p>
+                </div>
+                <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-orange-50 rounded-full group-hover:scale-110 transition-transform duration-500 z-0"></div>
             </div>
         </div>
 
-        <!-- Subject Overview -->
-        <div class="mb-6">
-            <h3 class="text-2xl font-bold text-gray-800 mb-4">Your Subjects</h3>
-        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            
+            <div class="lg:col-span-2">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-bold text-gray-800">Your Subjects</h3>
+                    <a href="subject.html" class="group flex items-center text-indigo-600 text-sm font-bold hover:text-indigo-700 transition-colors">
+                        Manage Subjects 
+                        <span class="ml-2 w-6 h-6 rounded-full bg-indigo-50 flex items-center justify-center group-hover:bg-indigo-100 transition-colors">
+                            <i class="fas fa-arrow-right text-xs"></i>
+                        </span>
+                    </a>
+                </div>
 
-        <div id="dashboardSubjectGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Subject cards injected by JS -->
-        </div>
+                <div id="dashboardSubjectGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    </div>
+            </div>
 
-        <!-- Upcoming Deadlines -->
-        <div class="mt-12">
-            <h3 class="text-2xl font-bold text-gray-800 mb-4">Upcoming Deadlines</h3>
-            <div id="upcomingTasks" class="bg-white rounded-xl p-6 shadow-sm">
-                <!-- Tasks will be loaded here -->
+            <div class="lg:col-span-1 flex flex-col gap-6 sticky top-24">
+                
+                <div class="glass-panel rounded-2xl p-6 shadow-sm border border-white/60 min-h-[200px]">
+                    <div class="flex items-center justify-between mb-4 pb-3 border-b border-gray-100/50">
+                        <h3 class="text-lg font-bold text-gray-800">Upcoming Deadlines</h3>
+                        <span class="text-xs font-medium text-gray-400 bg-gray-50 px-2 py-1 rounded">Next 3</span>
+                    </div>
+                    <div id="upcomingTasks" class="space-y-3">
+                        </div>
+                </div>
+
+                <div class="glass-panel rounded-2xl p-6 text-center relative overflow-hidden border border-white/60">
+                    <div class="relative z-10">
+                        <h3 class="text-lg font-bold text-gray-700">Study Mode On 🚀</h3>
+                        <p class="text-xs text-gray-500 mb-2">Stay consistent and crush your goals!</p>
+                        
+                        <div class="flex justify-center items-center -my-2">
+                            <lottie-player 
+                                src="https://assets10.lottiefiles.com/packages/lf20_w51pcehl.json" 
+                                background="transparent" 
+                                speed="1" 
+                                style="width: 200px; height: 200px;" 
+                                loop 
+                                autoplay>
+                            </lottie-player>
+                        </div>
+                        
+                        <a href="task.html" class="inline-block mt-2 text-xs font-semibold text-indigo-500 hover:text-indigo-700 hover:underline">
+                            Add New Task
+                        </a>
+                    </div>
+                    
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400"></div>
+                </div>
             </div>
         </div>
-
     </section>
 
-    <!-- Footer -->
+
     <footer class="bg-gray-800 text-white py-12">
         <div class="max-w-6xl mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-center">
@@ -164,201 +278,179 @@
     </footer>
 
     <script>
-
-            // Apply dark mode on page load for all pages
-    document.addEventListener('DOMContentLoaded', function() {
+        // --- 1. Dark Mode Logic (Matches index.html) ---
+   document.addEventListener('DOMContentLoaded', function() {
         const isDarkMode = localStorage.getItem('studysync-theme') === 'true';
         if (isDarkMode) {
             document.body.classList.add('dark-mode');
         }
-        
-        // Add dark mode styles to every page
+
         const style = document.createElement('style');
         style.textContent = `
             .dark-mode {
                 background-color: #111827 !important;
                 color: #f9fafb !important;
             }
-            
-            .dark-mode .bg-gray-50,
-            .dark-mode .bg-gray-100 {
+            .dark-mode .bg-gray-50, .dark-mode .bg-gray-100 {
                 background-color: #1f2937 !important;
             }
-            
             .dark-mode .bg-white {
                 background-color: #374151 !important;
             }
-            
-            .dark-mode .text-gray-800,
-            .dark-mode .text-gray-700 {
+            .dark-mode .text-gray-800, .dark-mode .text-gray-700 {
                 color: #f9fafb !important;
             }
-            
-            .dark-mode .text-gray-600,
-            .dark-mode .text-gray-500 {
+            .dark-mode .text-gray-600, .dark-mode .text-gray-500 {
                 color: #d1d5db !important;
             }
-            
             .dark-mode nav {
                 background-color: #1f2937 !important;
                 border-bottom: 1px solid #4b5563 !important;
             }
-            
             .dark-mode .bg-indigo-50 {
                 background-color: #3730a3 !important;
             }
-            
             .dark-mode .border {
                 border-color: #4b5563 !important;
             }
-            
-            .dark-mode input,
-            .dark-mode select,
-            .dark-mode textarea {
+            .dark-mode input, .dark-mode select, .dark-mode textarea {
                 background-color: #4b5563 !important;
                 color: #f9fafb !important;
                 border-color: #6b7280 !important;
             }
-            
-            .dark-mode .bg-gray-200 {
-                background-color: #4b5563 !important;
-            }
-            
-            .dark-mode .bg-red-100 {
-                background-color: #7f1d1d !important;
-            }
-            
-            .dark-mode .text-red-700 {
-                color: #fca5a5 !important;
-            }
-            
-            .dark-mode .bg-indigo-100 {
-                background-color: #3730a3 !important;
-            }
-            
-            .dark-mode .text-indigo-700 {
-                color: #c7d2fe !important;
-            }
-            
+            .dark-mode .bg-gray-200 { background-color: #4b5563 !important; }
+            .dark-mode .bg-red-100 { background-color: #7f1d1d !important; }
+            .dark-mode .text-red-700 { color: #fca5a5 !important; }
+            .dark-mode .bg-indigo-100 { background-color: #3730a3 !important; }
+            .dark-mode .text-indigo-700 { color: #c7d2fe !important; }
             .dark-mode footer {
                 background-color: #111827 !important;
                 border-top: 1px solid #374151 !important;
             }
-            
-            .dark-mode footer .text-gray-300 {
-                color: #d1d5db !important;
-            }
-            
-            .dark-mode footer .text-gray-400 {
-                color: #9ca3af !important;
-            }
-            
-            .dark-mode footer .border-gray-700 {
-                border-color: #4b5563 !important;
-            }
-            
-            .dark-mode footer .hover\\:text-white:hover {
-                color: #ffffff !important;
-            }
-            
+            .dark-mode footer .text-gray-300 { color: #d1d5db !important; }
+            .dark-mode footer .text-gray-400 { color: #9ca3af !important; }
+            .dark-mode footer .border-gray-700 { border-color: #4b5563 !important; }
+            .dark-mode footer .hover\\:text-white:hover { color: #ffffff !important; }
             .dark-mode .stats-card {
                 background: linear-gradient(to right, #374151, #4b5563) !important;
             }
-            
-            .dark-mode .feature-card,
-            .dark-mode .task-card,
-            .dark-mode .settings-card {
+            .dark-mode .feature-card, .dark-mode .task-card, .dark-mode .settings-card {
                 background-color: #374151 !important;
                 box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
             }
-            
-            .dark-mode .feature-card:hover,
-            .dark-mode .task-card:hover,
-            .dark-mode .settings-card:hover {
+            .dark-mode .feature-card:hover, .dark-mode .task-card:hover, .dark-mode .settings-card:hover {
                 box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4) !important;
             }
-            
-            .dark-mode .modal-content {
-                background-color: #374151 !important;
-            }
-            
-            .dark-mode .nav-link:after {
-                background-color: #818cf8 !important;
-            }
+            .dark-mode .modal-content { background-color: #374151 !important; }
+            .dark-mode .nav-link:after { background-color: #818cf8 !important; }
         `;
         document.head.appendChild(style);
     });
+    
+        // --- 2. Dashboard Logic ---
         function loadDashboard() {
             // Initialize localStorage if not exists
             if (!localStorage.getItem("subjectList")) localStorage.setItem("subjectList", JSON.stringify([]));
             if (!localStorage.getItem("taskList")) localStorage.setItem("taskList", JSON.stringify([]));
             
-            let subjects = JSON.parse(localStorage.getItem("subjectList")) || [];
-            let tasks = JSON.parse(localStorage.getItem("taskList")) || [];
+            let subjects = [];
+            let tasks = [];
+
+            try {
+                subjects = JSON.parse(localStorage.getItem("subjectList")) || [];
+                tasks = JSON.parse(localStorage.getItem("taskList")) || [];
+            } catch (e) {
+                console.error("Error parsing local storage", e);
+            }
             
-            // Subject stats
+            // 1. Update Stats
             document.getElementById("totalSubjects").innerText = subjects.length;
             
             let highPriority = subjects.filter(s => s.priority === "High");
             document.getElementById("highPriorityCount").innerText = highPriority.length;
-            
-            // Fix: Use first high priority subject or first subject
-            if (highPriority.length > 0) {
-                document.getElementById("focusSubject").innerText = highPriority[0].subName;
-            } else if (subjects.length > 0) {
-                document.getElementById("focusSubject").innerText = subjects[0].subName;
-            }
-            
-            // Task stats - FIXED: Now uses correct element
             document.getElementById("totalTasks").innerText = tasks.length;
             
-            // Subject cards
+            // Focus Subject Logic
+            const focusElem = document.getElementById("focusSubject");
+            if (highPriority.length > 0) {
+                focusElem.innerText = highPriority[0].subName;
+                focusElem.className = "text-lg font-bold text-red-500 truncate";
+            } else if (subjects.length > 0) {
+                focusElem.innerText = subjects[0].subName;
+                focusElem.className = "text-lg font-bold text-indigo-500 truncate";
+            } else {
+                focusElem.innerText = "Add Subjects";
+                focusElem.className = "text-lg font-bold text-gray-400 truncate";
+            }
+            
+            // 2. Render Subjects
             let grid = document.getElementById("dashboardSubjectGrid");
             grid.innerHTML = "";
             
             if (subjects.length === 0) {
                 grid.innerHTML = `
-                    <div class="col-span-full text-center text-gray-500 py-12">
-                        No subjects added yet. Go to <b>Subject Manager</b> to get started 📘
+                    <div class="col-span-full glass-panel rounded-xl p-8 text-center">
+                        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-folder-open text-gray-400 text-2xl"></i>
+                        </div>
+                        <p class="text-gray-500 mb-4">No subjects added yet.</p>
+                        <a href="subject.html" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">Add Subject</a>
                     </div>`;
-                return;
+            } else {
+                // Show max 4 subjects on dashboard
+                subjects.slice(0, 4).forEach(subject => {
+                    let priorityColor = 'bg-green-100 text-green-700';
+                    if(subject.priority === 'High') priorityColor = 'bg-red-100 text-red-700';
+                    if(subject.priority === 'Medium') priorityColor = 'bg-yellow-100 text-yellow-700';
+
+                    let card = document.createElement("div");
+                    card.className = "glass-panel rounded-xl p-5 hover:shadow-md transition-all border-l-4 " + (subject.priority === 'High' ? 'border-red-500' : 'border-indigo-500');
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="text-lg font-bold text-gray-800 mb-1">${subject.subName}</h4>
+                                <p class="text-xs text-gray-500">Code: ${subject.subCode || 'N/A'}</p>
+                            </div>
+                            <span class="px-2 py-1 rounded text-xs font-semibold ${priorityColor}">
+                                ${subject.priority}
+                            </span>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
+                            <span class="text-xs text-gray-400"><i class="fas fa-user mr-1"></i> ${subject.faculty || 'Self'}</span>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
             }
             
-            subjects.forEach(subject => {
-                let card = document.createElement("div");
-                card.innerHTML = `
-                    <div class="feature-card bg-white rounded-xl p-6 shadow-md">
-                        <h4 class="text-xl font-bold text-gray-800 mb-2">${subject.subName}</h4>
-                        <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold
-                            ${subject.priority === 'High' ? 'bg-red-100 text-red-700' :
-                              subject.priority === 'Medium' ? 'bg-yellow-100 text-yellow-700' :
-                              'bg-green-100 text-green-700'}">
-                            ${subject.priority} Priority
-                        </span>
-                    </div>`;
-                grid.appendChild(card);
-            });
-            
-            // Upcoming tasks
+            // 3. Render Upcoming Tasks
             let upcomingDiv = document.getElementById("upcomingTasks");
+            upcomingDiv.innerHTML = "";
+
             if (tasks.length === 0) {
-                upcomingDiv.innerHTML = '<p class="text-gray-500">No upcoming deadlines. Add tasks in Task Manager.</p>';
+                upcomingDiv.innerHTML = `
+                    <div class="text-center py-6">
+                        <p class="text-sm text-gray-400 italic">No pending tasks.</p>
+                        <a href="task.html" class="text-xs text-indigo-500 font-semibold mt-2 inline-block">Create Task +</a>
+                    </div>`;
             } else {
-                let html = '<div class="space-y-4">';
+                // Sort by due date (simple string comparison for MVP, ideally use Date objects)
                 tasks.slice(0, 3).forEach(task => {
-                    html += `
-                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                            <div>
-                                <h4 class="font-semibold">${task.title}</h4>
-                                <p class="text-sm text-gray-500">Due: ${task.dueDate}</p>
-                            </div>
-                            <span class="px-3 py-1 rounded-full text-sm ${task.priority === 'High' ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'}">
-                                ${task.priority}
-                            </span>
-                        </div>`;
+                    let priorityClass = task.priority === 'High' ? 'text-red-500 bg-red-50' : 'text-blue-500 bg-blue-50';
+                    
+                    let item = document.createElement("div");
+                    item.className = "flex items-center p-3 rounded-lg hover:bg-white/50 transition border border-transparent hover:border-gray-100";
+                    item.innerHTML = `
+                        <div class="flex-shrink-0 mr-3">
+                            <div class="w-2 h-2 rounded-full ${task.priority === 'High' ? 'bg-red-500' : 'bg-blue-500'}"></div>
+                        </div>
+                        <div class="flex-grow">
+                            <h4 class="text-sm font-semibold text-gray-800 line-clamp-1">${task.title}</h4>
+                            <p class="text-xs text-gray-500"><i class="far fa-clock mr-1"></i> ${task.dueDate}</p>
+                        </div>
+                    `;
+                    upcomingDiv.appendChild(item);
                 });
-                html += '</div>';
-                upcomingDiv.innerHTML = html;
             }
         }
 
